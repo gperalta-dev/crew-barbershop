@@ -1,0 +1,25 @@
+{
+  "name": "Crew Barber Shop",
+  "tagline": "Barbershop in Mill Woods Town Centre, Edmonton",
+  "intro": "Haircuts and beard trims inside Mill Woods Town Centre.",
+  "address": "Suite 210, 2331 66 Street NW, Edmonton, AB T6K 4B4",
+  "landmark": "",
+  "mapQuery": "Crew Barber Shop, 2331 66 Street NW, Edmonton, AB",
+  "phone": "",
+  "phoneDisplay": "",
+  "bookingUrl": "",
+  "accent": "#1f6f5c",
+  "services": [
+    { "name": "Haircut", "price": "" },
+    { "name": "Beard trim", "price": "" }
+  ],
+  "hours": [
+    { "day": "Monday", "time": "" },
+    { "day": "Tuesday", "time": "" },
+    { "day": "Wednesday", "time": "" },
+    { "day": "Thursday", "time": "" },
+    { "day": "Friday", "time": "" },
+    { "day": "Saturday", "time": "" },
+    { "day": "Sunday", "time": "" }
+  ]
+}
