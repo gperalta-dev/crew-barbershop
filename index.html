@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <title>Crew Barber Shop | Mill Woods, Edmonton (preview)</title>
-<meta name="description" content="Walk in or call ahead. Cuts, fades and beard trims inside Mill Woods Town Centre. Free website preview by Local Studio. Not the official site.">
+<meta name="description" content="Cuts, fades and beard trims inside Mill Woods Town Centre. Free website preview by Whyte Web. Not the official site.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -100,6 +100,9 @@
   .stat span { color: var(--on-dark-muted); font-size: 16px; }
 
   /* prices */
+  .svc-list { list-style: none; margin: 28px 0 0; padding: 0; border-top: 1px solid var(--line); max-width: 760px; }
+  .svc-list li { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); font-size: 20px; font-weight: 600; }
+  .svc-list li span { font-size: 15px; font-weight: 500; color: var(--muted); }
   .prices { display: grid; grid-template-columns: 1fr 1.08fr 1fr; gap: 16px; margin-top: 36px; align-items: stretch; }
   .tier { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 28px 26px; display: flex; flex-direction: column; transition: transform 200ms ease, box-shadow 200ms ease; }
   .tier:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(10, 20, 30, 0.1); }
@@ -141,6 +144,22 @@
   /* real photos */
   .k-sample { position: absolute; z-index: 2; left: 16px; top: 16px; padding: 4px 11px; border-radius: 999px; background: rgba(10, 12, 16, 0.66); color: #fff; font: 600 12.5px/1.35 system-ui, sans-serif; letter-spacing: 0.01em; pointer-events: none; }
   figure { position: relative; }
+  .k-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; counter-reset: step; }
+  .k-steps li { counter-increment: step; display: grid; grid-template-columns: auto 1fr; column-gap: 14px; align-items: baseline; padding: 18px 20px; border: 1px solid color-mix(in srgb, currentColor 16%, transparent); border-radius: 14px; }
+  .k-steps li::before { content: counter(step); grid-row: span 2; font-weight: 800; font-size: 22px; line-height: 1; color: var(--k-accent-text, currentColor); }
+  .k-steps b { font-size: 17px; }
+  .k-steps span { font-size: 15px; opacity: 0.78; }
+  @media (max-width: 760px) { .k-steps { grid-template-columns: 1fr; gap: 10px; } }
+  .k-facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .k-facts li { display: grid; gap: 2px; padding: 16px 20px; border: 1px solid color-mix(in srgb, currentColor 16%, transparent); border-radius: 14px; min-width: 0; }
+  .k-facts b { font-size: 13.5px; font-weight: 700; opacity: 0.7; }
+  .k-facts a, .k-facts span { font-size: 18px; font-weight: 600; color: inherit; text-decoration: none; overflow-wrap: anywhere; }
+  @media (max-width: 760px) { .k-facts { grid-template-columns: 1fr; gap: 8px; } .k-facts li { padding: 12px 16px; } }
+  @media (min-width: 901px) {
+    .textled .hero .wrap { grid-template-columns: 1fr; max-width: 900px; }
+    .textled .show { display: none; }
+  }
+  .hero-photo .k-sample { top: auto; left: auto; right: 16px; bottom: 16px; }
   .hero-photo { position: absolute; top: 6%; right: 4%; width: 74%; height: 78%; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); }
   .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.95); transform: scale(1.04); animation: kenburns 18s ease-in-out infinite alternate; }
   .hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, transparent 40%, color-mix(in srgb, var(--bg) 55%, transparent)); }
@@ -233,14 +252,15 @@
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
   @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--open) 55%, transparent); } 70% { box-shadow: 0 0 0 12px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 
+  .textled .art { display: none; }
   @media (max-width: 920px) {
-    .hero h1 { font-size: clamp(36px, 10vw, 56px); }
-    .hero .wrap { grid-template-columns: 1fr; padding: 108px 0 40px; gap: 28px; }
+    .hero h1 { font-size: 40px; }
+    .hero .wrap { grid-template-columns: 1fr; padding: 104px 0 32px; gap: 24px; }
     .show { height: auto; display: grid; gap: 14px; }
     .card { position: static; width: auto !important; animation: none; }
     .c-topics { display: none; }
     .hero-photo { position: relative; top: 0; right: 0; width: 100%; height: 240px; }
-    .art { width: 120vw; right: -40vw; opacity: 0.12; }
+    .art { display: none; }
     .stats-band .wrap { grid-template-columns: 1fr; gap: 18px; padding: 34px 0; }
     .prices { grid-template-columns: 1fr; }
     .tier.top { transform: none; } .tier.top:hover { transform: translateY(-4px); }
@@ -256,7 +276,7 @@
     .callbar { display: flex; position: fixed; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 20; gap: 10px; }
     .callbar .btn { flex: 1; box-shadow: var(--shadow); white-space: nowrap; }
     .callbar .btn-ghost { flex: 0 0 auto; background: var(--bg); }
-    .chat-fab { right: 12px; bottom: calc(max(12px, env(safe-area-inset-bottom)) + 66px); min-height: 48px; padding: 0 18px 0 14px; }
+    .chat-fab { display: none; right: 12px; bottom: calc(max(12px, env(safe-area-inset-bottom)) + 66px); min-height: 48px; padding: 0 18px 0 14px; }
     .chat { right: 8px; left: 8px; bottom: 8px; width: auto; height: min(620px, calc(100vh - 16px)); height: min(620px, calc(100dvh - 16px)); }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -266,8 +286,8 @@
   }
 </style>
 </head>
-<body>
-<div class="notice">Free website preview made by <b>Local Studio</b> for Crew Barber Shop. Not the official site.</div>
+<body class="">
+<div class="notice">Free website preview made by <b>Whyte Web</b> for Crew Barber Shop. Not the official site.</div>
 
 <nav aria-label="Main">
   <div class="wrap">
@@ -286,7 +306,7 @@
     <div>
       <div class="where">Mill Woods, Edmonton</div>
       <h1>Crew Barber Shop<span>Cuts in Mill Woods.</span></h1>
-      <p class="lead">Walk in or call ahead. Cuts, fades and beard trims inside Mill Woods Town Centre.</p>
+      <p class="lead">Cuts, fades and beard trims inside Mill Woods Town Centre.</p>
       <div class="ctas">
         <a class="btn btn-primary" href="tel:+17809352002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call (780) 935-2002</a>
         <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4" target="_blank" rel="noopener">Get directions<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -299,22 +319,21 @@
         <div class="lbl">Right now</div>
         <div class="state"><i class="dot" id="hero-dot"></i><span id="hero-state">Open</span></div>
         <div class="sub" id="hero-sub"></div>
-        <div class="week" id="hero-week"></div>
+        <div class="sub" id="hero-today"></div>
       </div>
-      <div class="card c-rating"><div class="lbl">Google rating</div><div class="big">4.5<small>737 reviews</small></div><div style="height:8px"></div><a href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read them on Google</a></div>
-      <div class="card c-topics"><div class="lbl">What people mention</div><div class="topic"><span>fades</span><em>25 reviews</em><div class="bar"><span data-w="100%"></span></div></div><div class="topic"><span>attention to detail</span><em>16 reviews</em><div class="bar"><span data-w="64%"></span></div></div><div class="topic"><span>beard trim</span><em>12 reviews</em><div class="bar"><span data-w="48%"></span></div></div><div class="topic"><span>fresh cut</span><em>11 reviews</em><div class="bar"><span data-w="44%"></span></div></div></div>
     </div>
   </div>
 </header>
 
 <main>
   <section class="stats-band"><div class="wrap"><div class="stat"><b>4.5</b><span>Google rating</span></div><div class="stat"><b>737</b><span>Google reviews</span></div><div class="stat"><b>7 days</b><span>open a week</span></div></div></section>
+  <div class="wrap" style="padding-top:56px; --k-accent-text: var(--accent)"><ul class="k-facts" aria-label="Contact"><li><b>Call</b><a href="tel:+17809352002">(780) 935-2002</a></li><li><b>Address</b><span>2331 66 St NW</span></li><li><b>Today</b><span data-today>Call to check</span></li></ul></div>
 
   <section class="block" id="prices">
     <div class="wrap">
-      <div class="eyebrow">Services and prices</div>
-      <h2>Services.</h2>
-      <div class="prices"><div class="tier"><span class="tag">Popular</span><h3>Beard trim</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it.</p><ul><li><i></i>Mentioned in 12 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div><div class="tier top"><span class="tag">Most mentioned on Google</span><h3>Fades</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it.</p><ul><li><i></i>Mentioned in 25 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-primary" href="tel:+17809352002">Call to book</a></div><div class="tier"><span class="tag">Popular</span><h3>Haircuts for kids</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it.</p><ul><li><i></i>Mentioned in 3 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div></div>
+      <div class="eyebrow">Ask for a price on any of these</div>
+      <h2>Services mentioned in Google reviews.</h2>
+      <ul class="svc-list"><li>Fades<span>Ask for a price</span></li><li>Beard trim<span>Ask for a price</span></li><li>Haircuts for kids<span>Ask for a price</span></li></ul>
     </div>
   </section>
 
@@ -322,7 +341,7 @@
     <div class="wrap">
       <div class="eyebrow">Gallery</div>
       <h2>A look inside.</h2>
-      <div class="gallery"><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-1.jpg" alt="Fades" loading="lazy"><figcaption>Fades</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-2.jpg" alt="Beard trim" loading="lazy"><figcaption>Beard trim</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-3.jpg" alt="Haircuts for kids" loading="lazy"><figcaption>Haircuts for kids</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-4.jpg" alt="Barber shop" loading="lazy"><figcaption>Barber shop</figcaption></figure></div>
+      <div class="gallery"><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-1.jpg" alt="Clippers and guards" loading="lazy"><figcaption>Clippers and guards</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-2.jpg" alt="Beard trim" loading="lazy"><figcaption>Beard trim</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-3.jpg" alt="Haircuts for kids" loading="lazy"><figcaption>Haircuts for kids</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-4.jpg" alt="Barber shop" loading="lazy"><figcaption>Barber shop</figcaption></figure></div>
     </div>
   </section>
 
@@ -337,7 +356,7 @@
     </div>
   </section>
 
-  <section class="block" style="padding-top:0"><div class="wrap"><div class="reviews"><div class="score">4.5</div><div><h2>737 people have reviewed Crew Barber Shop on Google.</h2><p>What reviewers mention most, with how many reviews mention it:</p><div class="chips"><span class="chip">fades<em>25</em></span><span class="chip">attention to detail<em>16</em></span><span class="chip">beard trim<em>12</em></span><span class="chip">fresh cut<em>11</em></span><span class="chip">kind staff<em>8</em></span><span class="chip">talented barbers<em>4</em></span></div><a class="btn btn-primary" href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read the reviews</a></div></div></div></section>
+  <section class="block" style="padding-top:0"><div class="wrap"><div class="reviews"><div class="score">4.5</div><div><h2>737 people have reviewed Crew Barber Shop on Google.</h2><a class="btn btn-primary" href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read the reviews</a></div></div></div></section>
 
   <section class="block" id="find">
     <div class="wrap grid-2">
@@ -364,9 +383,9 @@
 
 <footer>
   <div class="wrap">
-    <span>Preview made by Local Studio, Edmonton, for Crew Barber Shop. Details from the public Google listing (Oct 27, 2026). Not the official website.</span>
+    <span>Preview made by Whyte Web, Edmonton, for Crew Barber Shop. Details from the public Google listing (Oct 27, 2026). Not the official website.</span>
     <a href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Crew Barber Shop on Google Maps</a>
-    <span style="flex-basis:100%;font-size:12.5px;opacity:0.75">Photos: <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51209426512).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barber_cutting_hair_with_comb._Back_view_of_young_man_in_barber_shop.jpg" target="_blank" rel="noopener">Nenad Stojkovic</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51210140096).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51209426382).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0), via Wikimedia Commons. Sample photos until Crew Barber Shop adds their own.</span>
+    <span style="flex-basis:100%;font-size:12.5px;opacity:0.75">Photos: <a href="https://commons.wikimedia.org/wiki/File:M%C3%A1quina_de_cortar_pelo_o_cortapelos.jpg" target="_blank" rel="noopener">Casey Fleser from Nashville, TN</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barber_cutting_hair_with_comb._Back_view_of_young_man_in_barber_shop.jpg" target="_blank" rel="noopener">Nenad Stojkovic</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51210140096).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51209426382).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0), via Wikimedia Commons. Sample photos until Crew Barber Shop adds their own.</span>
   </div>
 </footer>
 
@@ -388,7 +407,7 @@
     <input id="chat-in" type="text" maxlength="200" placeholder="Ask about hours, location, services" aria-label="Your question" enterkeyhint="send">
     <button type="submit">Send</button>
   </form>
-  <div class="chat-note">Demo assistant by Local Studio. It answers only from Crew Barber Shop's Google listing. For anything else, call or text.</div>
+  <div class="chat-note">Demo assistant by Whyte Web. It answers only from Crew Barber Shop's Google listing. For anything else, call or text.</div>
 </section>
 
 <script type="application/json" id="biz">{"hours": {"Monday": "9:30 a.m. to 8 p.m.", "Tuesday": "9:30 a.m. to 8 p.m.", "Wednesday": "9:30 a.m. to 8 p.m.", "Thursday": "9:30 a.m. to 8 p.m.", "Friday": "9:30 a.m. to 8 p.m.", "Saturday": "9:30 a.m. to 7 p.m.", "Sunday": "11 a.m. to 6 p.m."}, "name": "Crew Barber Shop", "category": "Barber shop", "area": "Mill Woods", "address": "2331 66 St NW, Edmonton, AB T6K 4B4", "phone": "(780) 935-2002", "tel": "+17809352002", "rating": "4.5", "reviews": "737", "maps_url": "https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton", "directions_url": "https://www.google.com/maps/dir/?api=1&destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4", "services": [["fades", 25], ["beard trim", 12], ["haircuts for kids", 3]]}</script>
@@ -439,15 +458,9 @@
     document.getElementById(dot).classList.toggle('closed', !open);
     document.getElementById(label).textContent = label === 'hours-state' ? `${state}. ${sub}.` : state;
   }
-  document.getElementById('hero-sub').textContent = sub;  const week = document.getElementById('hero-week');
-  DAYS.forEach((d, k) => {
-    const cell = document.createElement('div');
-    const bar = document.createElement('i');
-    if (spans((biz.hours || {})[d]).length) bar.className = 'on';
-    if (k === today) bar.classList.add('today');
-    const lbl = document.createElement('b'); lbl.textContent = d.slice(0, 1);
-    cell.append(bar, lbl); week.append(cell);
-  });
+  document.getElementById('hero-sub').textContent = sub;
+  document.getElementById('hero-today').textContent = 'Today: ' + (hoursKnown ? ((biz.hours || {})[DAYS[today]] || 'Closed') : 'call to check');
+  document.querySelectorAll('[data-today]').forEach((el) => { el.textContent = hoursKnown ? ((biz.hours || {})[DAYS[today]] || 'Closed') : 'Call to check'; });
   const table = document.getElementById('hours-table');
   DAYS.forEach((d, k) => {
     const row = document.createElement('div'); if (k === today) row.className = 'today';
