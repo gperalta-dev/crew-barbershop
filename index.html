@@ -480,7 +480,7 @@
       let next = null;
       for (let k = 0; k < 7 && !next; k++) {
         const d = (t + k) % 7, s = spans(hoursOf(d)).find(([a]) => k > 0 || a > m);
-        if (s) next = { k, d, at: pretty(s[0]) };
+        if (s) next = { k, d, at: pretty(s[0]), end: pretty(s[1]) };
       }
       return { open: false, next };
     }
@@ -535,63 +535,101 @@
       'open opened opening close closed closes closing hours hour schedule time times now today tonight tomorrow currently late early until till morning afternoon evening day days week weekend ' +
       'address location located directions direction map maps find street near nearby way go come stop phone number call text contact reach rating rated review reviews star stars good best recommend people say reputation ' +
       'service services offer offers menu style styles specialty trim trims cut cuts haircut haircuts hair fade fades kid kids child children boy son toddler daughter girl ' +
+      'thanks thank thx cheers appreciate hi hello hey hiya bye goodbye later much again very take takes accept accepts price prices pricing cost costs much charge fee fees cheap discount deposit pay payment card cash debit tip student senior coupon book booking appointment appointments reserve reservation walk walkin walkins ins wait waiting cancel reschedule queue ' +
+      'park parking bus transit train lrt wheelchair accessible accessibility wifi pet pets dog dogs product products gift gifts career careers job jobs hiring ' +
       'mon tue wed thu fri sat sun monday tuesday wednesday thursday friday saturday sunday').split(' '));
     [biz.name, biz.area, biz.category, ...(biz.services || []).map((s) => s[0])].forEach((s) => norm(s).trim().split(' ').forEach((w) => KNOWN.add(w)));
     const unknownWords = (q) => q.trim().split(' ').filter((w) => w && !/^\d+$/.test(w) && !KNOWN.has(w) && !KNOWN.has(stem(w)));
     const handoff = { text: "I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text " + phone + ' and a person will help.', acts: contactActs };
 
+    // every intent a question contains contributes a part; parts are merged in the order they were asked.
+    // anything that can't be answered completely (digits, dates, holidays, unknown words) hands the whole question off.
+    const SOCIAL = new Set('hi hello hey yo hiya good morning afternoon evening thanks thank you thx cheers appreciate it bye goodbye see later much so very a lot again there now'.split(' '));
     function answer(raw) {
       const q = norm(raw), R = (rx) => rx.test(q);
-      if (R(/ (hi|hello|hey|yo|hiya|good morning|good afternoon|good evening) /) && q.trim().split(' ').length <= 3)
+      const words = q.trim().split(' ');
+      // dates and clock times (12/25, 2026-12-25, 5pm, 24/7) are not in the data: never answer them with today's status
+      if (/\d/.test(raw)) return handoff;
+      // social replies only for social-only messages
+      if (words.every((w) => SOCIAL.has(w))) {
+        if (R(/ (thanks|thank|thx|cheers|appreciate) /)) return { text: "You're welcome! See you soon." };
+        if (R(/ (bye|goodbye|see you|later) /)) return { text: 'Take care!' };
         return { text: 'Hi! Ask me about hours, where we are, services or how to reach us.' };
-      if (R(/ (thanks|thank you|thx|cheers|appreciate it) /)) return { text: "You're welcome! See you soon." };
-      if (R(/ (bye|goodbye|see you) /)) return { text: 'Take care!' };
+      }
       if (R(/ (are you|r u|am i talking to) (a |an |the )?(real|human|person|bot|robot|ai|machine|automated|chatbot|talking)/))
         return { text: "I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.", acts: contactActs };
-      if (R(/ (park|parking|bus|transit|train|lrt|wheelchair|accessible|accessibility|wifi|pets?|dogs?|products?|gift|gifts|careers?|jobs?|hiring) /))
-        return { text: "I don't have that on our listing. Call or text and we'll tell you.", acts: contactActs };
-      if (R(/ (price|prices|pricing|cost|costs|how much|charge|fee|fees|cheap|discount|deposit|pay|payment|card|cash|debit|tip|student|senior|coupon) /))
-        return { text: "I don't have prices or payment details. Call or text " + phone + " and we'll quote you.", acts: contactActs };
-      if (R(/ (book|booking|appointment|appointments|reserve|reservation|walk in|walkin|walk ins|walkins|wait time|waiting|cancel|reschedule|queue) /))
-        return { text: "I can't book or check the wait. Call or text " + phone + " and we'll sort it out.", acts: contactActs };
       // holidays and anything we have no data for: hand off instead of guessing from a keyword
       if (R(/ (christmas|xmas|boxing day|easter|thanksgiving|halloween|new years?|canada day|victoria day|labou?r day|remembrance|family day|good friday|holidays?|stat|long weekend) /))
         return { text: "I don't have holiday hours. Call or text " + phone + " to check before you come.", acts: contactActs };
-      // dates and clock times (12/25, 2026-12-25, 5pm) are not in the data: never answer them with today's status
-      if (/\d/.test(raw) || unknownWords(q).length) return handoff;
-      if (R(/ (phone|number|call|text|contact|reach|email|dm|message|instagram|facebook) /))
-        return { text: 'Call or text ' + phone + '.', acts: contactActs };
-      if (R(/ (where|address|location|directions?|map|maps|find you|get there|located|street|how do i get|near|nearby) /))
-        return { text: biz.address ? 'We are at ' + biz.address + '.' : 'Call or text for our address.', acts: [{ label: 'Get directions', href: biz.directions_url }, { label: 'Open in Maps', href: biz.maps_url, alt: true }] };
+      if (unknownWords(q).length) return handoff;
+
+      const at = (rx) => { const m = rx.exec(q); return m ? m.index : -1; };
+      const parts = [];
+      const push = (rx, text, acts) => { const i = at(rx); if (i >= 0) parts.push({ i, text, acts }); return i >= 0; };
+
+      // things we don't have: one combined handoff
+      const parking = at(/ (park|parking|bus|transit|train|lrt|wheelchair|accessible|accessibility|wifi|pets?|dogs?|products?|gift|gifts|careers?|jobs?|hiring) /);
+      const price = at(/ (price|prices|pricing|cost|costs|how much|charge|fee|fees|cheap|discount|deposit|pay|payment|card|cash|debit|tip|student|senior|coupon) /);
+      const book = at(/ (book|booking|appointment|appointments|reserve|reservation|walk in|walkin|walk ins|walkins|wait time|waiting|cancel|reschedule|queue) /);
+      const noData = [parking, price, book].filter((i) => i >= 0);
+      if (noData.length) {
+        const text = price >= 0 && book >= 0 ? "I don't have prices or payment details, and I can't book or check the wait. Call or text " + phone + " and we'll sort it out."
+          : price >= 0 ? "I don't have prices or payment details. Call or text " + phone + " and we'll quote you."
+          : book >= 0 ? "I can't book or check the wait. Call or text " + phone + " and we'll sort it out."
+          : "I don't have that on our listing. Call or text " + phone + " and we'll tell you.";
+        parts.push({ i: Math.min(...noData), text, acts: contactActs });
+      }
+      if (!noData.length)
+        push(/ (phone|number|call|text|contact|reach|email|dm|message|instagram|facebook) /, 'Call or text ' + phone + '.', contactActs);
+      push(/ (where|address|location|directions?|map|maps|find you|get there|located|street|how do i get|near|nearby) /,
+        biz.address ? 'We are at ' + biz.address + '.' : 'Call or text for our address.',
+        [{ label: 'Get directions', href: biz.directions_url }, { label: 'Open in Maps', href: biz.maps_url, alt: true }]);
+
       const svc = matchService(q);
-      if (svc)
-        return { text: svc[0].charAt(0).toUpperCase() + svc[0].slice(1) + ' is one of the things people mention in our Google reviews (' + svc[1] + ' reviews). I do not have prices or appointment times, so call or text ' + phone + ' to ask.', acts: contactActs };
-      if (R(/ (services?|offer|menu|do you do|what do you do|haircuts?|hair cuts?|cuts?|trims?|styles?|specialt(y|ies)|good at) /)) {
-        const list = (biz.services || []).map((s) => s[0] + ' (' + s[1] + ' reviews)').join(', ');
-        return { text: list ? 'What reviewers mention most: ' + list + '. For the full list and prices, call or text ' + phone + '.' : 'Call or text ' + phone + ' to ask what we offer.', acts: contactActs };
-      }
-      if (biz.rating && R(/ (rating|rated|reviews?|stars?|good|best|recommend|people say|reputation) /))
-        return { text: biz.rating + ' stars on Google from ' + biz.reviews + ' reviews. Reviewers mention ' + (biz.services || []).map((s) => s[0]).join(', ') + '.', acts: [{ label: 'Read the reviews', href: biz.maps_url }] };
-      const dr = dayRefs(q);
-      if (R(/ (hours|schedule|opening times|business hours|timings?) /) && !dr.length)
-        return known ? { text: hoursSummary() } : noHours;
-      if (dr.length) {
-        const a = dayAnswer(dr);
-        // "open now and tomorrow": answer both parts
-        if (known && R(/ (now|currently) /)) { const s = status(); a.text = (s.open ? "We're open now, until " + s.closes + '.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '')) + '\n' + a.text; }
-        return a;
-      }
-      if (R(/ (open|opened|opens|opening|close|closed|closes|closing|late|early|now|currently|what time) /)) {
-        if (!known) return noHours;
-        const s = status(), asksOpen = R(/ (open|opens|opening) /) && R(/ (what time|when) /), asksClose = R(/ (close|closes|closing) /);
-        if (s.open) {
-          if (asksOpen && !asksClose) return dayAnswer([todayIdx()]);
-          if (R(/ closed /) && !R(/ open /)) return { text: "No, we're open now. We close at " + s.closes + ' today.' };
-          return { text: asksClose && !R(/ (open|now) /) ? 'We close at ' + s.closes + ' today.' : "Yes, we're open now. We close at " + s.closes + ' today.' };
+      const listRx = / (services?|offer|menu|do you do|what do you do|haircuts?|hair cuts?|cuts?|trims?|styles?|specialt(y|ies)|good at) /;
+      if (price < 0 && book < 0) {
+        if (svc) {
+          const i = Math.max(0, at(new RegExp(' ' + norm(svc[0]).trim().split(' ')[0].replace(/s$/, '') + '\\w* ')));
+          parts.push({ i, text: svc[0].charAt(0).toUpperCase() + svc[0].slice(1) + ' is one of the things people mention in our Google reviews (' + svc[1] + ' reviews). I do not have prices or appointment times, so call or text ' + phone + ' to ask.', acts: contactActs });
+        } else {
+          const list = (biz.services || []).map((s) => s[0] + ' (' + s[1] + ' reviews)').join(', ');
+          push(listRx, list ? 'What reviewers mention most: ' + list + '. For the full list and prices, call or text ' + phone + '.' : 'Call or text ' + phone + ' to ask what we offer.', contactActs);
         }
-        return { text: (asksOpen || asksClose ? '' : R(/ closed /) && !R(/ open /) ? 'Yes, we are closed right now. ' : 'We are closed right now. ') + (s.next ? 'We open ' + when(s.next) + ' at ' + s.next.at + '.' : 'Call or text for our hours.') };
       }
-      return handoff;
+      if (biz.rating)
+        push(/ (rating|rated|reviews?|stars?|good|best|recommend|people say|reputation) /, biz.rating + ' stars on Google from ' + biz.reviews + ' reviews. Reviewers mention ' + (biz.services || []).map((s) => s[0]).join(', ') + '.', [{ label: 'Read the reviews', href: biz.maps_url }]);
+
+      // hours: named days, the full schedule, or open/close now
+      const dr = dayRefs(q), openClose = at(/ (open|opened|opens|opening|close|closed|closes|closing|late|early) /), hoursWord = at(/ (hours|schedule|opening times|business hours|timings?) /);
+      if (dr.length || hoursWord >= 0 || openClose >= 0) {
+        if (!known) parts.push({ i: Math.max(0, hoursWord, openClose), text: noHours.text, acts: noHours.acts });
+        else if (dr.length) {
+          let text = dayAnswer(dr).text;
+          if (R(/ (now|currently) /)) { const s = status(); text = (s.open ? "We're open now, until " + s.closes + '.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '')) + '\n' + text; }
+          parts.push({ i: Math.max(0, openClose, hoursWord, at(/ (today|tonight|tomorrow|weekends?|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)s? /)), text });
+        } else if (hoursWord >= 0) parts.push({ i: hoursWord, text: hoursSummary() });
+        else {
+          const s = status(), asksOpen = R(/ (open|opens|opening) /) && R(/ (what time|when) /), asksClose = R(/ (close|closes|closing) /), onlyClosed = R(/ closed /) && !R(/ open /);
+          let text;
+          if (s.open) {
+            if (asksOpen && asksClose) text = dayAnswer([todayIdx()]).text;
+            else if (asksOpen) text = dayAnswer([todayIdx()]).text;
+            else if (onlyClosed) text = "No, we're open now. We close at " + s.closes + ' today.';
+            else text = asksClose && !R(/ (open|now) /) ? 'We close at ' + s.closes + ' today.' : "Yes, we're open now. We close at " + s.closes + ' today.';
+          } else if (s.next) {
+            text = asksOpen && asksClose ? 'We open ' + when(s.next) + ' at ' + s.next.at + ' and close at ' + s.next.end + '.'
+              : asksOpen || asksClose ? 'We open ' + when(s.next) + ' at ' + s.next.at + (asksClose ? ' and close at ' + s.next.end : '') + '.'
+              : (onlyClosed ? 'Yes, we are closed right now. ' : 'We are closed right now. ') + 'We open ' + when(s.next) + ' at ' + s.next.at + '.';
+          } else text = 'Call or text for our hours.';
+          parts.push({ i: openClose, text });
+        }
+      }
+
+      if (!parts.length) return handoff;
+      parts.sort((a, b) => a.i - b.i);
+      const acts = [];
+      parts.forEach((p) => (p.acts || []).forEach((a) => { if (!acts.some((x) => x.href === a.href)) acts.push(a); }));
+      return { text: parts.map((p) => p.text).join('\n'), acts: acts.length ? acts : undefined };
     }
 
     function add(cls, text, acts) {
