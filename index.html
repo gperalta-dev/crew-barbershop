@@ -2,52 +2,324 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Crew Barber Shop | Mill Woods Town Centre, Edmonton</title>
-<meta name="description" content="Crew Barber Shop, Suite 210, 2331 66 Street NW, Edmonton, AB T6K 4B4. Call or walk in.">
-<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Crew Barber Shop | Mill Woods, Edmonton (preview)</title>
+<meta name="description" content="Walk in or call ahead. Cuts, fades and beard trims inside Mill Woods Town Centre. Free website preview by Local Studio. Not the official site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#1f6f5c;--ink:#16181a;--muted:#5b6166;--bg:#faf8f5;--card:#fff;--line:#e6e2db}
-*{box-sizing:border-box}
-body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
-.wrap{max-width:720px;margin:0 auto;padding:0 20px}
-header.hero{background:var(--ink);color:#fff;padding:56px 0 40px}
-.hero h1{margin:0 0 8px;font-size:2.2rem;line-height:1.1;letter-spacing:-.02em}
-.hero p{margin:0 0 24px;color:#d5d8da}
-.btns{display:flex;flex-wrap:wrap;gap:12px}
-.btn{display:inline-block;padding:14px 22px;border-radius:10px;font-weight:600;text-decoration:none;text-align:center;min-height:48px;border:2px solid var(--accent);background:var(--accent);color:#fff}
-.btn.alt{background:transparent;color:#fff;border-color:#fff}
-.btn.off{opacity:.65;cursor:not-allowed}
-section{padding:32px 0;border-bottom:1px solid var(--line)}
-h2{margin:0 0 14px;font-size:1.3rem}
-ul.list{list-style:none;margin:0;padding:0;background:var(--card);border:1px solid var(--line);border-radius:12px}
-ul.list li{display:flex;justify-content:space-between;gap:16px;padding:14px 16px;border-bottom:1px solid var(--line)}
-ul.list li:last-child{border-bottom:0}
-.tbc{color:var(--muted);font-style:italic}
-a{color:var(--accent)}
-.note{color:var(--muted);font-size:.9rem;margin-top:10px}
-footer{padding:24px 0 40px;color:var(--muted);font-size:.85rem;text-align:center}
-@media(min-width:700px){.hero h1{font-size:3rem}header.hero{padding:88px 0 56px}}
+  :root {
+    --bg: #0f1a17; --bg-2: #1f3d33; --accent: #d9a441; --accent-ink: #1c1404;
+    --cream: #f7f3ec; --ink: #16181c; --muted: #5d6470; --line: rgba(22, 24, 28, 0.1);
+    --on-dark: #f4f1ea; --on-dark-muted: rgba(244, 241, 234, 0.72); --card: #ffffff;
+    --open: #2f9e66; --closed: #c2412d; --radius: 18px;
+    --shadow: 0 18px 50px rgba(5, 10, 15, 0.28);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; font: 400 17px/1.55 "Figtree", system-ui, sans-serif; color: var(--ink); background: var(--cream); -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: "Bricolage Grotesque", "Figtree", sans-serif; letter-spacing: -0.02em; margin: 0; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 8px; }
+  .wrap { width: min(1160px, 100% - 40px); margin: 0 auto; }
+
+  /* preview notice */
+  .notice { background: #0b0d10; color: var(--on-dark-muted); font-size: 14px; text-align: center; padding: 9px 16px; }
+  .notice b { color: var(--on-dark); font-weight: 600; }
+
+  /* nav */
+  nav { position: absolute; left: 0; right: 0; z-index: 5; }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 76px; }
+  .brand { display: flex; align-items: center; gap: 12px; color: var(--on-dark); text-decoration: none; font: 700 19px/1 "Bricolage Grotesque", sans-serif; }
+  .mark { width: 38px; height: 38px; border-radius: 11px; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }
+  .mark svg { width: 22px; height: 22px; }
+  .nav-call { color: var(--on-dark); text-decoration: none; font-weight: 600; border: 1.5px solid rgba(244, 241, 234, 0.35); border-radius: 999px; padding: 10px 18px; display: inline-flex; gap: 8px; align-items: center; min-height: 44px; transition: border-color 160ms, background 160ms; }
+  .nav-call:hover { border-color: var(--accent); background: rgba(255, 255, 255, 0.06); }
+  .nav-call svg { width: 18px; height: 18px; }
+
+  /* hero */
+  .hero { position: relative; min-height: 100vh; min-height: 100svh; background: radial-gradient(1200px 700px at 78% 20%, var(--bg-2), transparent 60%), var(--bg); color: var(--on-dark); display: flex; align-items: center; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px); background-size: 26px 26px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; padding: 120px 0 80px; }
+  .where { display: inline-flex; align-items: center; gap: 10px; color: var(--accent); font-weight: 600; font-size: 15px; margin-bottom: 18px; }
+  .where::before { content: ""; width: 28px; height: 2px; background: var(--accent); border-radius: 2px; }
+  .hero .wrap > div { min-width: 0; }
+  .hero h1 { font-size: clamp(38px, 5.4vw, 76px); line-height: 1; font-weight: 800; overflow-wrap: anywhere; }
+  .hero h1 span { display: block; color: var(--accent); }
+  .hero p.lead { font-size: clamp(18px, 1.6vw, 21px); color: var(--on-dark-muted); max-width: 33ch; margin: 22px 0 32px; }
+  .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 54px; padding: 0 26px; border-radius: 999px; font: 700 17px/1 "Figtree", sans-serif; text-decoration: none; border: 0; cursor: pointer; transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease; }
+  .btn svg { width: 20px; height: 20px; transition: transform 200ms ease; }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 40%, transparent); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 14px 34px color-mix(in srgb, var(--accent) 50%, transparent); }
+  .btn-primary:hover svg { transform: rotate(-12deg) scale(1.08); }
+  .btn-primary:active { transform: translateY(0) scale(0.98); }
+  .btn-ghost { color: var(--on-dark); border: 1.5px solid rgba(244, 241, 234, 0.4); background: transparent; }
+  .btn-ghost:hover { border-color: var(--on-dark); background: rgba(255, 255, 255, 0.06); }
+  .btn-ghost:hover svg { transform: translateX(3px); }
+  .trust { margin-top: 28px; display: flex; align-items: center; gap: 12px; color: var(--on-dark-muted); font-size: 15px; }
+  .stars { display: inline-flex; gap: 2px; color: var(--accent); }
+  .stars svg { width: 18px; height: 18px; }
+
+  /* showcase cards */
+  .show { position: relative; height: 560px; }
+  .card { position: absolute; background: var(--card); color: var(--ink); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; animation: float 7s ease-in-out infinite; }
+  .card .lbl { font-size: 13px; color: var(--muted); font-weight: 600; }
+  .c-status { top: 0; left: 0; width: 280px; animation-delay: -1s; }
+  .c-status .state { display: flex; align-items: center; gap: 10px; font: 700 24px/1.1 "Bricolage Grotesque", sans-serif; margin-top: 6px; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--open); box-shadow: 0 0 0 0 color-mix(in srgb, var(--open) 60%, transparent); animation: pulse 2.2s infinite; }
+  .dot.closed { background: var(--closed); animation: none; }
+  .c-status .sub { color: var(--muted); font-size: 15px; margin-top: 4px; }
+  .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 14px; }
+  .week i { display: block; height: 30px; border-radius: 7px; background: #eef0f2; position: relative; }
+  .week i.on { background: color-mix(in srgb, var(--accent) 35%, #fff); }
+  .week i.today { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .week b { display: block; text-align: center; font-size: 11px; color: var(--muted); font-weight: 600; margin-top: 4px; }
+  .c-rating { top: 21%; right: 0; width: 220px; animation-delay: -3s; }
+  .c-rating .big { font: 800 44px/1 "Bricolage Grotesque", sans-serif; display: flex; align-items: baseline; gap: 8px; margin-top: 6px; }
+  .c-rating .big small { font: 600 15px/1 "Figtree", sans-serif; color: var(--muted); }
+  .c-rating a { font-size: 14px; font-weight: 600; color: var(--muted); }
+  .c-topics { bottom: 0; left: 10%; width: 330px; animation-delay: -5s; }
+  .topic { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; margin-top: 10px; font-size: 15px; font-weight: 600; }
+  .topic .bar { grid-column: 1 / -1; height: 7px; border-radius: 99px; background: #eef0f2; overflow: hidden; }
+  .topic .bar span { display: block; height: 100%; width: 0; background: var(--accent); border-radius: inherit; transition: width 1.4s cubic-bezier(.2, .7, .2, 1); }
+  .topic em { font-style: normal; color: var(--muted); font-weight: 500; font-size: 13px; }
+
+  /* sections */
+  section.block { padding: 96px 0; }
+  .eyebrow { color: var(--muted); font-weight: 600; margin-bottom: 10px; }
+  h2 { font-size: clamp(32px, 3.6vw, 48px); line-height: 1.05; font-weight: 800; }
+  .grid-2 { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 56px; align-items: start; }
+  .services { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; margin-top: 34px; }
+  .svc { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms; }
+  .svc:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(10, 20, 30, 0.08); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .svc .ico { width: 46px; height: 46px; border-radius: 13px; background: color-mix(in srgb, var(--accent) 18%, #fff); color: var(--bg); display: grid; place-items: center; margin-bottom: 14px; }
+  .svc .ico svg { width: 24px; height: 24px; transition: transform 260ms ease; }
+  .svc:hover .ico svg { transform: rotate(-8deg) scale(1.1); }
+  .svc h3 { font-size: 20px; }
+  .svc p { margin: 6px 0 0; color: var(--muted); font-size: 15.5px; }
+  .ask { margin-top: 18px; color: var(--muted); font-size: 15.5px; }
+
+  .hours { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .hours div { display: flex; justify-content: space-between; padding: 15px 22px; border-bottom: 1px solid var(--line); font-size: 16.5px; }
+  .hours div:last-child { border-bottom: 0; }
+  .hours div.today { background: color-mix(in srgb, var(--accent) 14%, #fff); font-weight: 700; }
+  .hours span:last-child { color: var(--muted); }
+  .hours div.today span:last-child { color: var(--ink); }
+  .live { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; margin: 18px 0 0; }
+
+  .reviews { background: var(--bg); color: var(--on-dark); border-radius: 28px; padding: 56px; display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; }
+  .reviews .score { font: 800 96px/0.9 "Bricolage Grotesque", sans-serif; color: var(--accent); }
+  .reviews p { color: var(--on-dark-muted); margin: 10px 0 22px; max-width: 46ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 26px; }
+  .chip { border: 1px solid rgba(244, 241, 234, 0.2); border-radius: 999px; padding: 8px 14px; font-size: 15px; color: var(--on-dark); }
+  .chip em { font-style: normal; color: var(--accent); font-weight: 700; margin-left: 6px; }
+
+  .map { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); background: #e9e6df; aspect-ratio: 4 / 3; }
+  .map iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .addr { font: 700 22px/1.3 "Bricolage Grotesque", sans-serif; margin: 18px 0 20px; }
+  .btn-dark { background: var(--ink); color: #fff; }
+  .btn-dark:hover { transform: translateY(-2px); }
+  .btn-outline { border: 1.5px solid var(--ink); color: var(--ink); background: transparent; }
+  .btn-outline:hover { background: var(--ink); color: #fff; }
+
+  .final { background: var(--accent); color: var(--accent-ink); }
+  .final .wrap { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 64px 0; flex-wrap: wrap; }
+  .final h2 { color: var(--accent-ink); }
+  .final .btn { background: var(--accent-ink); color: var(--accent); }
+  footer { background: #0b0d10; color: rgba(244, 241, 234, 0.6); font-size: 14.5px; padding: 30px 0 110px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+  footer a { color: rgba(244, 241, 234, 0.85); }
+
+  .callbar { display: none; }
+
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--open) 55%, transparent); } 70% { box-shadow: 0 0 0 12px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+  @media (max-width: 920px) {
+    .hero h1 { font-size: clamp(36px, 10vw, 56px); }
+    .hero .wrap { grid-template-columns: 1fr; padding: 108px 0 40px; gap: 28px; }
+    .show { height: auto; display: grid; gap: 14px; }
+    .card { position: static; width: auto !important; animation: none; }
+    .c-topics { display: none; }
+    .grid-2, .reviews { grid-template-columns: 1fr; gap: 28px; }
+    .reviews { padding: 34px 24px; }
+    .reviews .score { font-size: 72px; }
+    section.block { padding: 64px 0; }
+    .nav-call span { display: none; }
+    .callbar { display: flex; position: fixed; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 20; gap: 10px; }
+    .callbar .btn { flex: 1; box-shadow: var(--shadow); }
+    .callbar .btn-ghost { flex: 0 0 auto; background: var(--bg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
+    .topic .bar span { transition: none; }
+  }
 </style>
 </head>
 <body>
-<header class="hero"><div class="wrap">
-<h1>Crew Barber Shop</h1>
-<p>Barber shop in Mill Woods Town Centre, Edmonton. Cuts, shaves and grooming for men and women, inside Mill Woods Town Centre. Call or walk in.</p>
-<div class="btns"><a class="btn" href="tel:+17809352002">Call (780) 935-2002</a><a class="btn alt" href="https://www.google.com/maps/search/?api=1&query=Crew%20Barber%20Shop%2C%202331%2066%20Street%20NW%2C%20Edmonton%2C%20AB" target="_blank" rel="noopener">Get directions</a></div>
-</div></header>
-<main class="wrap">
-<section id="services"><h2>Services &amp; prices</h2>
-<ul class="list"><li><span>Men's cuts</span><span><span class="tbc">Ask in shop</span></span></li><li><span>Hot leather shave</span><span><span class="tbc">Ask in shop</span></span></li><li><span>Women's hair services</span><span><span class="tbc">Ask in shop</span></span></li></ul>
-<p class="note">Services as listed by Mill Woods Town Centre. Prices: call or ask in shop.</p></section>
-<section id="hours"><h2>Hours</h2>
-<ul class="list"><li><span>Monday</span><span><span class="tbc">To be confirmed</span></span></li><li><span>Tuesday</span><span><span class="tbc">To be confirmed</span></span></li><li><span>Wednesday</span><span><span class="tbc">To be confirmed</span></span></li><li><span>Thursday</span><span><span class="tbc">To be confirmed</span></span></li><li><span>Friday</span><span><span class="tbc">To be confirmed</span></span></li><li><span>Saturday</span><span><span class="tbc">To be confirmed</span></span></li><li><span>Sunday</span><span><span class="tbc">To be confirmed</span></span></li></ul></section>
-<section id="location"><h2>Find us</h2>
-<p>Suite 210, 2331 66 Street NW, Edmonton, AB T6K 4B4</p>
-<p><a href="https://www.google.com/maps/search/?api=1&query=Crew%20Barber%20Shop%2C%202331%2066%20Street%20NW%2C%20Edmonton%2C%20AB" target="_blank" rel="noopener">Open in Google Maps</a></p></section>
-<section id="booking"><h2>Call or walk in</h2>
-<p>Call <a href="tel:+17809352002">(780) 935-2002</a> or walk in.</p></section>
+<div class="notice">Free website preview made by <b>Local Studio</b> for Crew Barber Shop. Not the official site.</div>
+
+<nav aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></span>Crew Barber Shop</a>
+    <a class="nav-call" href="tel:+17809352002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg><span>(780) 935-2002</span></a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="where">Mill Woods, Edmonton</div>
+      <h1>Crew Barber Shop<span>Cuts in Mill Woods.</span></h1>
+      <p class="lead">Walk in or call ahead. Cuts, fades and beard trims inside Mill Woods Town Centre.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="tel:+17809352002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call (780) 935-2002</a>
+        <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4" target="_blank" rel="noopener">Get directions<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="trust"><span class="stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></span><span>4.5 on Google from 737 reviews</span></div>
+    </div>
+    <div class="show" aria-hidden="true">
+      <div class="card c-status">
+        <div class="lbl">Right now</div>
+        <div class="state"><i class="dot" id="hero-dot"></i><span id="hero-state">Open</span></div>
+        <div class="sub" id="hero-sub"></div>
+        <div class="week" id="hero-week"></div>
+      </div>
+      <div class="card c-rating"><div class="lbl">Google rating</div><div class="big">4.5<small>737 reviews</small></div><div style="height:8px"></div><a href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read them on Google</a></div>
+      <div class="card c-topics"><div class="lbl">What people mention</div><div class="topic"><span>fades</span><em>25 reviews</em><div class="bar"><span data-w="100%"></span></div></div><div class="topic"><span>attention to detail</span><em>16 reviews</em><div class="bar"><span data-w="64%"></span></div></div><div class="topic"><span>beard trim</span><em>12 reviews</em><div class="bar"><span data-w="48%"></span></div></div><div class="topic"><span>fresh cut</span><em>11 reviews</em><div class="bar"><span data-w="44%"></span></div></div></div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="block" id="services">
+    <div class="wrap">
+      <div class="eyebrow">What people come for</div>
+      <h2>Known for fades.</h2>
+      <div class="services"><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Fades</h3><p>Mentioned in 25 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Attention to detail</h3><p>Mentioned in 16 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Beard trim</h3><p>Mentioned in 12 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Fresh cut</h3><p>Mentioned in 11 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Kind staff</h3><p>Mentioned in 8 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Talented barbers</h3><p>Mentioned in 4 Google reviews.</p></div></div>
+      <p class="ask">Ask for the full list of services and prices when you call.</p>
+    </div>
+  </section>
+
+  <section class="block" id="hours" style="padding-top: 0">
+    <div class="wrap grid-2">
+      <div>
+        <div class="eyebrow">Hours</div>
+        <h2>Come in when it suits you.</h2>
+        <p class="live"><i class="dot" id="hours-dot"></i><span id="hours-state"></span></p>
+      </div>
+      <div class="hours" id="hours-table"></div>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:0"><div class="wrap"><div class="reviews"><div class="score">4.5</div><div><h2>737 people have reviewed Crew Barber Shop on Google.</h2><p>What reviewers mention most, with how many reviews mention it:</p><div class="chips"><span class="chip">fades<em>25</em></span><span class="chip">attention to detail<em>16</em></span><span class="chip">beard trim<em>12</em></span><span class="chip">fresh cut<em>11</em></span><span class="chip">kind staff<em>8</em></span><span class="chip">talented barbers<em>4</em></span></div><a class="btn btn-primary" href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read the reviews</a></div></div></div></section>
+
+  <section class="block" id="find">
+    <div class="wrap grid-2">
+      <div>
+        <div class="eyebrow">Find us</div>
+        <h2>Easy to find in Mill Woods.</h2>
+        <p class="addr">2331 66 St NW, Edmonton, AB T6K 4B4</p>
+        <div class="ctas">
+          <a class="btn btn-dark" href="https://www.google.com/maps/dir/?api=1&amp;destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4" target="_blank" rel="noopener">Get directions</a>
+          <a class="btn btn-outline" href="tel:+17809352002">Call (780) 935-2002</a>
+        </div>
+      </div>
+      <div class="map"><iframe title="Map showing Crew Barber Shop" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4&amp;output=embed"></iframe></div>
+    </div>
+  </section>
 </main>
-<footer><div class="wrap">Preview by Local Studio</div></footer>
+
+<section class="final">
+  <div class="wrap">
+    <h2>Your next cut is a call away.</h2>
+    <a class="btn" href="tel:+17809352002">Call (780) 935-2002</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Preview made by Local Studio, Edmonton, for Crew Barber Shop. Details from the public Google listing (Oct 27, 2026). Not the official website.</span>
+    <a href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Crew Barber Shop on Google Maps</a>
+  </div>
+</footer>
+
+<div class="callbar">
+  <a class="btn btn-primary" href="tel:+17809352002">Call (780) 935-2002</a>
+  <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4" target="_blank" rel="noopener" aria-label="Get directions">Directions</a>
+</div>
+
+<script type="application/json" id="biz">{"hours": {"Monday": "9:30 a.m. to 8 p.m.", "Tuesday": "9:30 a.m. to 8 p.m.", "Wednesday": "9:30 a.m. to 8 p.m.", "Thursday": "9:30 a.m. to 8 p.m.", "Friday": "9:30 a.m. to 8 p.m.", "Saturday": "9:30 a.m. to 7 p.m.", "Sunday": "11 a.m. to 6 p.m."}}</script>
+<script>
+  // live open/closed status in edmonton time, from the hours on the google listing
+  const biz = JSON.parse(document.getElementById('biz').textContent);
+  const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const toMin = (t) => {
+    const m = t.trim().toLowerCase().replace(/\./g, '').match(/^(\d{1,2})(?::(\d{2}))?\s*(am|pm)?$/);
+    if (!m) return null;
+    let h = Number(m[1]) % 12; if (m[3] === 'pm') h += 12;
+    return h * 60 + Number(m[2] || 0);
+  };
+  function spans(text) {
+    if (!text || /closed/i.test(text)) return [];
+    if (/24 hours/i.test(text)) return [[0, 1440]];
+    return text.split(',').map((part) => {
+      const [a, b] = part.split(/\s+to\s+|[–—-]/);
+      if (!b) return null;
+      let s = toMin(a), e = toMin(b);
+      if (s == null || e == null) return null;
+      if (!/[ap]\.?m/i.test(a) && /p\.?m/i.test(b) && s + 720 < e) s += 0;
+      if (e <= s) e += 1440;
+      return [s, e];
+    }).filter(Boolean);
+  }
+  const pretty = (min) => {
+    min %= 1440; let h = Math.floor(min / 60), m = min % 60; const ap = h >= 12 ? 'p.m.' : 'a.m.';
+    h = h % 12 || 12; return m ? `${h}:${String(m).padStart(2, '0')} ${ap}` : `${h} ${ap}`;
+  };
+  const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Edmonton' }));
+  const today = (now.getDay() + 6) % 7, minute = now.getHours() * 60 + now.getMinutes();
+  let state = 'Hours not listed', sub = 'Call to check', open = false;
+  const hoursKnown = Object.keys(biz.hours || {}).length > 0;
+  if (hoursKnown) {
+    const cur = spans(biz.hours[DAYS[today]]).find(([s, e]) => minute >= s && minute < e);
+    if (cur) { open = true; state = 'Open now'; sub = `Closes at ${pretty(cur[1])}`; }
+    else {
+      state = 'Closed now';
+      for (let k = 0; k < 7; k++) {
+        const d = (today + k) % 7, next = spans(biz.hours[DAYS[d]]).find(([s]) => k > 0 || s > minute);
+        if (next) { sub = `Opens ${k === 0 ? 'today' : k === 1 ? 'tomorrow' : DAYS[d]} at ${pretty(next[0])}`; break; }
+      }
+    }
+  }
+  for (const [dot, label] of [['hero-dot', 'hero-state'], ['hours-dot', 'hours-state']]) {
+    document.getElementById(dot).classList.toggle('closed', !open);
+    document.getElementById(label).textContent = label === 'hours-state' ? `${state}. ${sub}.` : state;
+  }
+  document.getElementById('hero-sub').textContent = sub;
+  const week = document.getElementById('hero-week');
+  DAYS.forEach((d, k) => {
+    const cell = document.createElement('div');
+    const bar = document.createElement('i');
+    if (spans((biz.hours || {})[d]).length) bar.className = 'on';
+    if (k === today) bar.classList.add('today');
+    const lbl = document.createElement('b'); lbl.textContent = d.slice(0, 1);
+    cell.append(bar, lbl); week.append(cell);
+  });
+  const table = document.getElementById('hours-table');
+  DAYS.forEach((d, k) => {
+    const row = document.createElement('div'); if (k === today) row.className = 'today';
+    const a = document.createElement('span'); a.textContent = k === today ? `${d} (today)` : d;
+    const b = document.createElement('span'); b.textContent = (biz.hours || {})[d] || (hoursKnown ? 'Closed' : 'Call to check');
+    row.append(a, b); table.append(row);
+  });
+  // grow the review-topic bars once they are on screen
+  const bars = document.querySelectorAll('.topic .bar span');
+  requestAnimationFrame(() => setTimeout(() => bars.forEach((b) => { b.style.width = b.dataset.w; }), 250));
+</script>
 </body>
 </html>
