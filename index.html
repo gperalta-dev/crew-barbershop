@@ -150,7 +150,7 @@
     section.block { padding: 64px 0; }
     .nav-call span { display: none; }
     .callbar { display: flex; position: fixed; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 20; gap: 10px; }
-    .callbar .btn { flex: 1; box-shadow: var(--shadow); }
+    .callbar .btn { flex: 1; box-shadow: var(--shadow); white-space: nowrap; }
     .callbar .btn-ghost { flex: 0 0 auto; background: var(--bg); }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -249,7 +249,7 @@
 </footer>
 
 <div class="callbar">
-  <a class="btn btn-primary" href="tel:+17809352002">Call (780) 935-2002</a>
+  <a class="btn btn-primary" href="tel:+17809352002" aria-label="Call (780) 935-2002">Call now</a>
   <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4" target="_blank" rel="noopener" aria-label="Get directions">Directions</a>
 </div>
 
