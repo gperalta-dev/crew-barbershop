@@ -194,6 +194,38 @@
   footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
   footer a { color: rgba(244, 241, 234, 0.85); }
 
+  /* chat assistant (client-side, answers only from the listing data in #biz) */
+  .chat-fab { position: fixed; right: 24px; bottom: 24px; z-index: 30; display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 22px 0 18px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font: 700 16px/1 "Figtree", sans-serif; cursor: pointer; box-shadow: 0 12px 32px rgba(5, 10, 15, 0.35); transition: transform 160ms ease; }
+  .chat-fab:hover { transform: translateY(-2px); }
+  .chat-fab svg { width: 22px; height: 22px; }
+  .chat { position: fixed; right: 24px; bottom: 24px; z-index: 40; width: 380px; height: min(580px, calc(100vh - 48px)); height: min(580px, calc(100dvh - 48px)); display: none; flex-direction: column; background: #fff; color: var(--ink); border-radius: 22px; box-shadow: 0 24px 70px rgba(5, 10, 15, 0.4); overflow: hidden; }
+  .chat.open { display: flex; }
+  .chat-head { background: var(--bg); color: var(--on-dark); padding: 14px 14px 14px 18px; display: flex; align-items: center; gap: 12px; }
+  .chat-head .mark { flex: none; }
+  .chat-head .t { flex: 1; min-width: 0; }
+  .chat-head b { display: block; font: 700 17px/1.2 "Bricolage Grotesque", sans-serif; }
+  .chat-head small { display: flex; align-items: center; gap: 7px; color: var(--on-dark-muted); font-size: 13.5px; margin-top: 2px; }
+  .chat-head small .dot { width: 9px; height: 9px; animation: none; flex: none; }
+  .chat-x { flex: none; width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255, 255, 255, 0.1); color: var(--on-dark); cursor: pointer; display: grid; place-items: center; }
+  .chat-x:hover { background: rgba(255, 255, 255, 0.2); }
+  .chat-x svg { width: 20px; height: 20px; }
+  .chat-log { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #f6f4ef; overscroll-behavior: contain; }
+  .msg { white-space: pre-line; max-width: 88%; padding: 10px 14px; border-radius: 16px; font-size: 16px; line-height: 1.45; overflow-wrap: anywhere; }
+  .msg.bot { align-self: flex-start; background: #fff; border: 1px solid var(--line); border-bottom-left-radius: 5px; }
+  .msg.me { align-self: flex-end; background: var(--bg); color: var(--on-dark); border-bottom-right-radius: 5px; }
+  .msg .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .msg .acts a { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 15px; text-decoration: none; }
+  .msg .acts a.alt { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+  .msg.typing { color: var(--muted); letter-spacing: 3px; }
+  .chat-chips { display: flex; gap: 8px; padding: 10px 14px 0; overflow-x: auto; background: #fff; scrollbar-width: none; }
+  .chat-chips::-webkit-scrollbar { display: none; }
+  .chat-chips button { flex: none; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1.5px solid color-mix(in srgb, var(--bg) 25%, #fff); background: #fff; color: var(--ink); font: 600 15px/1 "Figtree", sans-serif; cursor: pointer; }
+  .chat-chips button:hover { border-color: var(--bg); }
+  .chat-form { display: flex; gap: 8px; padding: 10px 14px; background: #fff; }
+  .chat-form input { flex: 1; min-width: 0; min-height: 48px; border: 1.5px solid #c9ccd1; border-radius: 999px; padding: 0 18px; font: 400 16px "Figtree", sans-serif; color: var(--ink); background: #fff; }
+  .chat-form button { flex: none; min-height: 48px; padding: 0 20px; border: 0; border-radius: 999px; background: var(--bg); color: var(--on-dark); font: 700 16px "Figtree", sans-serif; cursor: pointer; }
+  .chat-note { padding: 0 16px 12px; background: #fff; color: var(--muted); font-size: 12.5px; line-height: 1.4; }
+
   .callbar { display: none; }
 
   @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
@@ -222,6 +254,8 @@
     .callbar { display: flex; position: fixed; left: 12px; right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 20; gap: 10px; }
     .callbar .btn { flex: 1; box-shadow: var(--shadow); white-space: nowrap; }
     .callbar .btn-ghost { flex: 0 0 auto; background: var(--bg); }
+    .chat-fab { right: 12px; bottom: calc(max(12px, env(safe-area-inset-bottom)) + 66px); min-height: 48px; padding: 0 18px 0 14px; }
+    .chat { right: 8px; left: 8px; bottom: 8px; width: auto; height: min(620px, calc(100vh - 16px)); height: min(620px, calc(100dvh - 16px)); }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -339,7 +373,23 @@
   <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&amp;destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4" target="_blank" rel="noopener" aria-label="Get directions">Directions</a>
 </div>
 
-<script type="application/json" id="biz">{"hours": {"Monday": "9:30 a.m. to 8 p.m.", "Tuesday": "9:30 a.m. to 8 p.m.", "Wednesday": "9:30 a.m. to 8 p.m.", "Thursday": "9:30 a.m. to 8 p.m.", "Friday": "9:30 a.m. to 8 p.m.", "Saturday": "9:30 a.m. to 7 p.m.", "Sunday": "11 a.m. to 6 p.m."}}</script>
+<button class="chat-fab" id="chat-fab" type="button" aria-expanded="false" aria-controls="chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.6A8 8 0 1 1 21 12z"/></svg>Ask us</button>
+<section class="chat" id="chat" role="dialog" aria-label="Crew Barber Shop chat assistant">
+  <div class="chat-head">
+    <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></span>
+    <div class="t"><b>Crew Barber Shop</b><small><i class="dot" id="chat-dot"></i><span id="chat-status"></span></small></div>
+    <button class="chat-x" id="chat-x" type="button" aria-label="Close chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="chat-log" id="chat-log" role="log" aria-live="polite"></div>
+  <div class="chat-chips" id="chat-chips"></div>
+  <form class="chat-form" id="chat-form" autocomplete="off">
+    <input id="chat-in" type="text" maxlength="200" placeholder="Ask about hours, location, services" aria-label="Your question" enterkeyhint="send">
+    <button type="submit">Send</button>
+  </form>
+  <div class="chat-note">Demo assistant by Local Studio. It answers only from Crew Barber Shop's Google listing. For anything else, call or text.</div>
+</section>
+
+<script type="application/json" id="biz">{"hours": {"Monday": "9:30 a.m. to 8 p.m.", "Tuesday": "9:30 a.m. to 8 p.m.", "Wednesday": "9:30 a.m. to 8 p.m.", "Thursday": "9:30 a.m. to 8 p.m.", "Friday": "9:30 a.m. to 8 p.m.", "Saturday": "9:30 a.m. to 7 p.m.", "Sunday": "11 a.m. to 6 p.m."}, "name": "Crew Barber Shop", "category": "Barber shop", "area": "Mill Woods", "address": "2331 66 St NW, Edmonton, AB T6K 4B4", "phone": "(780) 935-2002", "tel": "+17809352002", "rating": "4.5", "reviews": "737", "maps_url": "https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton", "directions_url": "https://www.google.com/maps/dir/?api=1&destination=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4", "services": [["fades", 25], ["beard trim", 12], ["haircuts for kids", 3]]}</script>
 <script>
   // live open/closed status in edmonton time, from the hours on the google listing
   const biz = JSON.parse(document.getElementById('biz').textContent);
@@ -386,8 +436,7 @@
     document.getElementById(dot).classList.toggle('closed', !open);
     document.getElementById(label).textContent = label === 'hours-state' ? `${state}. ${sub}.` : state;
   }
-  document.getElementById('hero-sub').textContent = sub;
-  const week = document.getElementById('hero-week');
+  document.getElementById('hero-sub').textContent = sub;  const week = document.getElementById('hero-week');
   DAYS.forEach((d, k) => {
     const cell = document.createElement('div');
     const bar = document.createElement('i');
@@ -406,6 +455,152 @@
   // grow the review-topic bars once they are on screen
   const bars = document.querySelectorAll('.topic .bar span');
   requestAnimationFrame(() => setTimeout(() => bars.forEach((b) => { b.style.width = b.dataset.w; }), 250));
+</script>
+<script>
+  // chat assistant: rule-based, runs in the page, no network calls, no API key.
+  // it answers from `biz` (the google listing data) and hands everything else to call or text.
+  (function () {
+    const fab = document.getElementById('chat-fab'), box = document.getElementById('chat');
+    const log = document.getElementById('chat-log'), input = document.getElementById('chat-in');
+    const chips = document.getElementById('chat-chips');
+    const phone = biz.phone, tel = biz.tel;
+    const nowEdm = () => new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Edmonton' }));
+    const todayIdx = () => (nowEdm().getDay() + 6) % 7;
+    const hoursOf = (k) => (biz.hours || {})[DAYS[k]] || '';
+    const known = Object.keys(biz.hours || {}).length > 0;
+    const callAct = { label: 'Call ' + phone, href: 'tel:' + tel };
+    const textAct = { label: 'Text', href: 'sms:' + tel, alt: true };
+    const contactActs = [callAct, textAct];
+    const noHours = { text: "I don't have hours on file. Call or text and we'll tell you.", acts: contactActs };
+
+    function status() {
+      const n = nowEdm(), t = todayIdx(), m = n.getHours() * 60 + n.getMinutes();
+      const cur = spans(hoursOf(t)).find(([s, e]) => m >= s && m < e);
+      if (cur) return { open: true, closes: pretty(cur[1]) };
+      let next = null;
+      for (let k = 0; k < 7 && !next; k++) {
+        const d = (t + k) % 7, s = spans(hoursOf(d)).find(([a]) => k > 0 || a > m);
+        if (s) next = { k, d, at: pretty(s[0]) };
+      }
+      return { open: false, next };
+    }
+    const when = (nx) => nx.k === 0 ? 'today' : nx.k === 1 ? 'tomorrow' : DAYS[nx.d];
+    function paintStatus() {
+      const dot = document.getElementById('chat-dot'), label = document.getElementById('chat-status');
+      if (!known) { dot.classList.add('closed'); label.textContent = 'Call to check hours'; return; }
+      const s = status();
+      dot.classList.toggle('closed', !s.open);
+      label.textContent = s.open ? 'Open now, closes ' + s.closes : 'Closed now' + (s.next ? ', opens ' + when(s.next) + ' at ' + s.next.at : '');
+    }
+    function hoursSummary() {
+      const rows = [];
+      DAYS.forEach((d, k) => {
+        const h = hoursOf(k) || 'Closed', last = rows[rows.length - 1];
+        if (last && last.h === h && last.to === k - 1) last.to = k; else rows.push({ from: k, to: k, h });
+      });
+      return rows.map((r) => (r.from === r.to ? DAYS[r.from] : DAYS[r.from].slice(0, 3) + ' to ' + DAYS[r.to].slice(0, 3)) + ': ' + r.h).join('\n');
+    }
+    const norm = (s) => ' ' + s.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+    const GENERIC = ['haircut', 'haircuts', 'cut', 'cuts', 'hair', 'the', 'for', 'and', 'fresh'];
+    const stem = (w) => w.replace(/s$/, '');
+    function matchService(q) {
+      const words = q.trim().split(' ').map(stem);
+      return (biz.services || []).find(([name]) =>
+        norm(name).trim().split(' ').some((tok) => tok.length > 2 && !GENERIC.includes(tok) && words.includes(stem(tok))) ||
+        (/kid/.test(name) && words.some((w) => /^(kid|child|children|boy|son|toddler)$/.test(w))));
+    }
+    function dayRef(q) {
+      if (/ (today|tonight) /.test(q)) return todayIdx();
+      if (/ tomorrow /.test(q)) return (todayIdx() + 1) % 7;
+      const i = DAYS.findIndex((d) => q.includes(' ' + d.toLowerCase() + ' ') || q.includes(' ' + d.toLowerCase().slice(0, 3) + ' '));
+      return i >= 0 ? i : null;
+    }
+    function dayAnswer(k) {
+      if (!known) return noHours;
+      const h = hoursOf(k), name = k === todayIdx() ? 'Today (' + DAYS[k] + ')' : DAYS[k];
+      return { text: spans(h).length ? name + " we're open " + h + '.' : 'We are closed on ' + DAYS[k] + '.' };
+    }
+
+    function answer(raw) {
+      const q = norm(raw), R = (rx) => rx.test(q);
+      if (R(/ (hi|hello|hey|yo|hiya|good morning|good afternoon|good evening) /) && q.trim().split(' ').length <= 3)
+        return { text: 'Hi! Ask me about hours, where we are, services or how to reach us.' };
+      if (R(/ (thanks|thank you|thx|cheers|appreciate it) /)) return { text: "You're welcome! See you soon." };
+      if (R(/ (bye|goodbye|see you) /)) return { text: 'Take care!' };
+      if (R(/ (are you|r u|am i talking to) (a |an |the )?(real|human|person|bot|robot|ai|machine|automated|chatbot|talking)/))
+        return { text: "I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.", acts: contactActs };
+      if (R(/ (park|parking|bus|transit|train|lrt|wheelchair|accessible|accessibility|wifi|pets?|dogs?|products?|gift|gifts|careers?|jobs?|hiring) /))
+        return { text: "I don't have that on our listing. Call or text and we'll tell you.", acts: contactActs };
+      if (R(/ (price|prices|pricing|cost|costs|how much|charge|fee|fees|cheap|discount|deposit|pay|payment|card|cash|debit|tip|student|senior|coupon) /))
+        return { text: "I don't have prices or payment details. Call or text " + phone + " and we'll quote you.", acts: contactActs };
+      if (R(/ (book|booking|appointment|appointments|reserve|reservation|walk in|walkin|walk ins|walkins|wait time|waiting|cancel|reschedule|queue) /))
+        return { text: "I can't book or check the wait. Call or text " + phone + " and we'll sort it out.", acts: contactActs };
+      if (R(/ (phone|number|call|text|contact|reach|email|dm|message|instagram|facebook) /))
+        return { text: 'Call or text ' + phone + '.', acts: contactActs };
+      if (R(/ (where|address|location|directions?|map|maps|find you|get there|located|street|how do i get|near|nearby) /))
+        return { text: biz.address ? 'We are at ' + biz.address + '.' : 'Call or text for our address.', acts: [{ label: 'Get directions', href: biz.directions_url }, { label: 'Open in Maps', href: biz.maps_url, alt: true }] };
+      const svc = matchService(q);
+      if (svc)
+        return { text: svc[0].charAt(0).toUpperCase() + svc[0].slice(1) + ' is one of the things people mention in our Google reviews (' + svc[1] + ' reviews). I do not have prices or appointment times, so call or text ' + phone + ' to ask.', acts: contactActs };
+      if (R(/ (services?|offer|menu|do you do|what do you do|haircuts?|hair cuts?|cuts?|trims?|styles?|specialt(y|ies)|good at) /)) {
+        const list = (biz.services || []).map((s) => s[0] + ' (' + s[1] + ' reviews)').join(', ');
+        return { text: list ? 'What reviewers mention most: ' + list + '. For the full list and prices, call or text ' + phone + '.' : 'Call or text ' + phone + ' to ask what we offer.', acts: contactActs };
+      }
+      if (biz.rating && R(/ (rating|rated|reviews?|stars?|good|best|recommend|people say|reputation) /))
+        return { text: biz.rating + ' stars on Google from ' + biz.reviews + ' reviews. Reviewers mention ' + (biz.services || []).map((s) => s[0]).join(', ') + '.', acts: [{ label: 'Read the reviews', href: biz.maps_url }] };
+      const dr = dayRef(q);
+      if (R(/ (hours|schedule|opening times|business hours|timings?) /) && dr === null)
+        return known ? { text: hoursSummary() } : noHours;
+      if (dr !== null) return dayAnswer(dr);
+      if (R(/ (open|opened|close|closed|closes|closing|late|early|now|currently|what time) /)) {
+        if (!known) return noHours;
+        const s = status();
+        return { text: s.open ? "Yes, we're open now. We close at " + s.closes + ' today.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '') };
+      }
+      return { text: "I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text " + phone + ' and a person will help.', acts: contactActs };
+    }
+
+    function add(cls, text, acts) {
+      const m = document.createElement('div'); m.className = 'msg ' + cls; m.textContent = text.replace(/\.{2}(?!\.)/g, '.');
+      if (acts && acts.length) {
+        const a = document.createElement('div'); a.className = 'acts';
+        acts.forEach((x) => {
+          const l = document.createElement('a'); l.href = x.href; l.textContent = x.label;
+          if (x.alt) l.className = 'alt';
+          if (/^https?:/.test(x.href)) { l.target = '_blank'; l.rel = 'noopener'; }
+          a.append(l);
+        });
+        m.append(a);
+      }
+      log.append(m); log.scrollTop = log.scrollHeight; return m;
+    }
+    function ask(text) {
+      text = text.trim(); if (!text) return;
+      add('me', text);
+      const wait = add('bot typing', '•••');
+      setTimeout(() => { const r = answer(text); wait.remove(); add('bot', r.text, r.acts); }, 350);
+    }
+    function start() {
+      paintStatus();
+      add('bot', 'Hi! I can answer questions about ' + biz.name + ': hours, where we are, services. For anything else I will point you to call or text.');
+      [['Open now?', 'Are you open now?'], ['Hours', 'What are your hours?'], ['Where are you?', 'Where are you located?'], ['Services', 'What services do you offer?'], ['Call or text', 'What is your phone number?']].forEach(([label, q]) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = label;
+        b.addEventListener('click', () => ask(q)); chips.append(b);
+      });
+    }
+    let started = false;
+    function setOpen(on) {
+      box.classList.toggle('open', on); fab.style.display = on ? 'none' : '';
+      fab.setAttribute('aria-expanded', String(on));
+      if (on) { if (!started) { started = true; start(); } else paintStatus(); setTimeout(() => input.focus(), 30); }
+      else fab.focus();
+    }
+    fab.addEventListener('click', () => setOpen(true));
+    document.getElementById('chat-x').addEventListener('click', () => setOpen(false));
+    box.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    document.getElementById('chat-form').addEventListener('submit', (e) => { e.preventDefault(); const v = input.value; input.value = ''; ask(v); });
+    window.__chatAnswer = answer; // exposed so the question list can be tested without clicking
+  })();
 </script>
 </body>
 </html>
