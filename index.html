@@ -128,6 +128,7 @@
     background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, #fff) 0 14px, #fff 14px 28px); border: 1.5px dashed color-mix(in srgb, var(--accent) 55%, #999); transition: transform 220ms ease; }
   .shot:hover { transform: scale(1.015); }
   .shot:first-child { grid-row: span 2; }
+  .shot:nth-child(4) { grid-column: 2 / span 2; }
   .shot svg { width: 34px; height: 34px; display: block; margin: 0 auto 8px; color: var(--bg); opacity: 0.6; transition: transform 300ms ease; }
   .shot:hover svg { transform: translateY(-3px) rotate(-6deg); }
 
@@ -199,6 +200,7 @@
     .tier.top { transform: none; } .tier.top:hover { transform: translateY(-4px); }
     .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 140px 140px; }
     .shot:first-child { grid-column: span 2; grid-row: auto; }
+    .shot:nth-child(4) { grid-column: auto; }
     .quotes { grid-template-columns: 1fr; }
     .grid-2, .reviews { grid-template-columns: 1fr; gap: 28px; }
     .reviews { padding: 34px 24px; }
@@ -263,7 +265,7 @@
     <div class="wrap">
       <div class="eyebrow">Services and prices</div>
       <h2>Known for fades.</h2>
-      <div class="prices"><div class="tier"><span class="tag">Popular</span><h3>Beard trim</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 12 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div><div class="tier top"><span class="tag">Most mentioned on Google</span><h3>Fades</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 25 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-primary" href="tel:+17809352002">Call to book</a></div><div class="tier"><span class="tag">[Service]</span><h3>[Service]</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div></div>
+      <div class="prices"><div class="tier"><span class="tag">Popular</span><h3>Beard trim</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 12 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div><div class="tier top"><span class="tag">Most mentioned on Google</span><h3>Fades</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 25 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-primary" href="tel:+17809352002">Call to book</a></div><div class="tier"><span class="tag">Popular</span><h3>Haircuts for kids</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 3 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div></div>
       <p class="ask">Prices in [brackets] are placeholders until Crew Barber Shop confirms them.</p>
     </div>
   </section>
@@ -272,7 +274,7 @@
     <div class="wrap">
       <div class="eyebrow">Gallery</div>
       <h2>See the work.</h2>
-      <div class="gallery"><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: inside the shop]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: fades]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: beard trim]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: the team]</div></div></div>
+      <div class="gallery"><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: inside the shop]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: fades]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: beard trim]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: haircuts for kids]</div></div></div>
     </div>
   </section>
 
