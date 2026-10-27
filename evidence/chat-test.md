@@ -1,6 +1,7 @@
-# Chat widget test, 2026-10-27
+# Chat widget test, 2026-10-27 (rev 2, after LOC-24 rejection)
 
 Playwright + Edge, local build of index.html, clock faked to Tue Oct 27 2026 12:00 and 21:00 America/Edmonton. Script: money-town/tools/chat_test.mjs
+Added for LOC-24: Christmas/Thanksgiving, pizza delivery, beard transplants, tattoos, dye, perm now hand off; natural phrasings still answered.
 
 ```
 PASS 390: fab visible and inside viewport  {"x":266.15625,"y":718,"width":111.84375,"height":48}
@@ -55,7 +56,20 @@ PASS Q "are you any good" @open  4.5 stars on Google from 737 reviews. Reviewers
 PASS Q "how much is a fade" @open  I don't have prices or payment details. Call or text (780) 935-2002 and we'll quote you.
 PASS Q "do you take walk-ins" @open  I can't book or check the wait. Call or text (780) 935-2002 and we'll sort it out.
 PASS Q "is there parking" @open  I don't have that on our listing. Call or text and we'll tell you.
-PASS Q "do you do hot towel shaves" @open  What reviewers mention most: fades (25 reviews), beard trim (12 reviews), haircuts for kids (3 reviews). For the full list and prices, call or text (780) 935-2002.
+PASS Q "do you do hot towel shaves" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "Do you open on Christmas?" @open  I don't have holiday hours. Call or text (780) 935-2002 to check before you come.
+PASS Q "are you open on thanksgiving" @open  I don't have holiday hours. Call or text (780) 935-2002 to check before you come.
+PASS Q "Can you deliver pizza tomorrow?" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "Do you do beard transplants?" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "do you do tattoos" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "do you sell hair dye" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "can I get a perm" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "is the barber hiring tomorrow" @open  I don't have that on our listing. Call or text and we'll tell you.
+PASS Q "what time do you guys close on saturdays?" @open  Saturday we're open 9:30 a.m. to 7 p.m..
+PASS Q "is the shop open right now?" @open  Yes, we're open now. We close at 8 p.m. today.
+PASS Q "Can I get a fade?" @open  Fades is one of the things people mention in our Google reviews (25 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "do you cut kids hair" @open  Haircuts for kids is one of the things people mention in our Google reviews (3 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "what is the address of Crew Barber Shop" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
 PASS Q "asdf qwerty" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
 PASS Q "are you a robot?" @open  I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.
 PASS Q "thanks!" @open  You're welcome! See you soon.
@@ -64,7 +78,7 @@ PASS Q "<img src=x onerror=alert(1)>" @open  I don't have that. I only know our 
 PASS typed HTML is shown as text, not executed
 PASS closed: header says closed + next open  Closed now, opens tomorrow at 9:30 a.m.
 
-58/58 passed
+71/71 passed
 ```
 
-Screenshots: chat-390-0-closed.png (launcher), chat-390-1-conversation.png, chat-390-2-after-hours.png, chat-1280-0-closed.png, chat-1280-1-conversation.png
+Screenshots: chat-390-0-closed.png, chat-390-1-conversation.png, chat-390-2-after-hours.png, chat-1280-0-closed.png, chat-1280-1-conversation.png

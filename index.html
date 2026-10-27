@@ -512,7 +512,7 @@
     function dayRef(q) {
       if (/ (today|tonight) /.test(q)) return todayIdx();
       if (/ tomorrow /.test(q)) return (todayIdx() + 1) % 7;
-      const i = DAYS.findIndex((d) => q.includes(' ' + d.toLowerCase() + ' ') || q.includes(' ' + d.toLowerCase().slice(0, 3) + ' '));
+      const i = DAYS.findIndex((d) => new RegExp(' (' + d.toLowerCase() + '|' + d.toLowerCase().slice(0, 3) + ')s? ').test(q));
       return i >= 0 ? i : null;
     }
     function dayAnswer(k) {
@@ -520,6 +520,17 @@
       const h = hoursOf(k), name = k === todayIdx() ? 'Today (' + DAYS[k] + ')' : DAYS[k];
       return { text: spans(h).length ? name + " we're open " + h + '.' : 'We are closed on ' + DAYS[k] + '.' };
     }
+
+    // words the assistant understands. a question with any other word is handed off, never answered from a keyword match
+    const KNOWN = new Set(('a an the any some my me i we us you your yours our it its is are am was be do does did can could would will have has get got need needs want wants looking ' +
+      'what which when where how who whats there here this that if so with by on at in of to for from and or also please just really quick question wondering tell know let guys ok okay yes no about right still around then soon sometime anytime ' +
+      'open opened opening close closed closes closing hours hour schedule time times now today tonight tomorrow currently late early until till morning afternoon evening day days week weekend ' +
+      'address location located directions direction map maps find street near nearby way go come stop phone number call text contact reach rating rated review reviews star stars good best recommend people say reputation ' +
+      'service services offer offers menu style styles specialty trim trims cut cuts haircut haircuts hair fade fades kid kids child children boy son toddler daughter girl ' +
+      'mon tue wed thu fri sat sun monday tuesday wednesday thursday friday saturday sunday').split(' '));
+    [biz.name, biz.area, biz.category, ...(biz.services || []).map((s) => s[0])].forEach((s) => norm(s).trim().split(' ').forEach((w) => KNOWN.add(w)));
+    const unknownWords = (q) => q.trim().split(' ').filter((w) => w && !/^\d+$/.test(w) && !KNOWN.has(w) && !KNOWN.has(stem(w)));
+    const handoff = { text: "I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text " + phone + ' and a person will help.', acts: contactActs };
 
     function answer(raw) {
       const q = norm(raw), R = (rx) => rx.test(q);
@@ -535,6 +546,10 @@
         return { text: "I don't have prices or payment details. Call or text " + phone + " and we'll quote you.", acts: contactActs };
       if (R(/ (book|booking|appointment|appointments|reserve|reservation|walk in|walkin|walk ins|walkins|wait time|waiting|cancel|reschedule|queue) /))
         return { text: "I can't book or check the wait. Call or text " + phone + " and we'll sort it out.", acts: contactActs };
+      // holidays and anything we have no data for: hand off instead of guessing from a keyword
+      if (R(/ (christmas|xmas|boxing day|easter|thanksgiving|halloween|new years?|canada day|victoria day|labou?r day|remembrance|family day|good friday|holidays?|stat|long weekend) /))
+        return { text: "I don't have holiday hours. Call or text " + phone + " to check before you come.", acts: contactActs };
+      if (unknownWords(q).length) return handoff;
       if (R(/ (phone|number|call|text|contact|reach|email|dm|message|instagram|facebook) /))
         return { text: 'Call or text ' + phone + '.', acts: contactActs };
       if (R(/ (where|address|location|directions?|map|maps|find you|get there|located|street|how do i get|near|nearby) /))
@@ -557,7 +572,7 @@
         const s = status();
         return { text: s.open ? "Yes, we're open now. We close at " + s.closes + ' today.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '') };
       }
-      return { text: "I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text " + phone + ' and a person will help.', acts: contactActs };
+      return handoff;
     }
 
     function add(cls, text, acts) {
