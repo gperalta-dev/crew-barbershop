@@ -503,11 +503,14 @@
     const norm = (s) => ' ' + s.toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
     const GENERIC = ['haircut', 'haircuts', 'cut', 'cuts', 'hair', 'the', 'for', 'and', 'fresh'];
     const stem = (w) => w.replace(/s$/, '');
-    function matchService(q) {
+    function matchServices(q) {
       const words = q.trim().split(' ').map(stem);
-      return (biz.services || []).find(([name]) =>
-        norm(name).trim().split(' ').some((tok) => tok.length > 2 && !GENERIC.includes(tok) && words.includes(stem(tok))) ||
-        (/kid/.test(name) && words.some((w) => /^(kid|child|children|boy|son|toddler)$/.test(w))));
+      return (biz.services || []).map(([name, n]) => {
+        const toks = norm(name).trim().split(' ').filter((tok) => tok.length > 2 && !GENERIC.includes(tok)).map(stem);
+        let i = words.findIndex((w) => toks.includes(w));
+        if (i < 0 && /kid/.test(name)) i = words.findIndex((w) => /^(kid|child|children|boy|son|toddler)$/.test(w));
+        return i < 0 ? null : [name, n, i];
+      }).filter(Boolean).sort((a, b) => a[2] - b[2]);
     }
     // every day the question names, in the order asked ("today", "tomorrow", day names, "weekend")
     function dayRefs(q) {
@@ -535,7 +538,7 @@
       'open opened opening close closed closes closing hours hour schedule time times now today tonight tomorrow currently late early until till morning afternoon evening day days week weekend ' +
       'address location located directions direction map maps find street near nearby way go come stop phone number call text contact reach rating rated review reviews star stars good best recommend people say reputation ' +
       'service services offer offers menu style styles specialty trim trims cut cuts haircut haircuts hair fade fades kid kids child children boy son toddler daughter girl ' +
-      'thanks thank thx cheers appreciate hi hello hey hiya bye goodbye later much again very take takes accept accepts price prices pricing cost costs much charge fee fees cheap discount deposit pay payment card cash debit tip student senior coupon book booking appointment appointments reserve reservation walk walkin walkins ins wait waiting cancel reschedule queue ' +
+      'robot robots bot real human person machine automated chatbot talking ai thanks thank thx cheers appreciate hi hello hey hiya bye goodbye later much again very take takes accept accepts price prices pricing cost costs much charge fee fees cheap discount deposit pay payment card cash debit tip student senior coupon book booking appointment appointments reserve reservation walk walkin walkins ins wait waiting cancel reschedule queue ' +
       'park parking bus transit train lrt wheelchair accessible accessibility wifi pet pets dog dogs product products gift gifts career careers job jobs hiring ' +
       'mon tue wed thu fri sat sun monday tuesday wednesday thursday friday saturday sunday').split(' '));
     [biz.name, biz.area, biz.category, ...(biz.services || []).map((s) => s[0])].forEach((s) => norm(s).trim().split(' ').forEach((w) => KNOWN.add(w)));
@@ -556,8 +559,6 @@
         if (R(/ (bye|goodbye|see you|later) /)) return { text: 'Take care!' };
         return { text: 'Hi! Ask me about hours, where we are, services or how to reach us.' };
       }
-      if (R(/ (are you|r u|am i talking to) (a |an |the )?(real|human|person|bot|robot|ai|machine|automated|chatbot|talking)/))
-        return { text: "I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.", acts: contactActs };
       // holidays and anything we have no data for: hand off instead of guessing from a keyword
       if (R(/ (christmas|xmas|boxing day|easter|thanksgiving|halloween|new years?|canada day|victoria day|labou?r day|remembrance|family day|good friday|holidays?|stat|long weekend) /))
         return { text: "I don't have holiday hours. Call or text " + phone + " to check before you come.", acts: contactActs };
@@ -565,6 +566,8 @@
 
       const at = (rx) => { const m = rx.exec(q); return m ? m.index : -1; };
       const parts = [];
+      if (R(/ (are you|r u|am i talking to) (a |an |the )?(real|human|person|bot|robot|ai|machine|automated|chatbot|talking)/))
+        parts.push({ i: at(/ (are you|r u|am i talking to) /), text: "I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.", acts: contactActs });
       const push = (rx, text, acts) => { const i = at(rx); if (i >= 0) parts.push({ i, text, acts }); return i >= 0; };
 
       // things we don't have: one combined handoff
@@ -585,48 +588,58 @@
         biz.address ? 'We are at ' + biz.address + '.' : 'Call or text for our address.',
         [{ label: 'Get directions', href: biz.directions_url }, { label: 'Open in Maps', href: biz.maps_url, alt: true }]);
 
-      const svc = matchService(q);
+      const svcs = matchServices(q);
       const listRx = / (services?|offer|menu|do you do|what do you do|haircuts?|hair cuts?|cuts?|trims?|styles?|specialt(y|ies)|good at) /;
-      if (price < 0 && book < 0) {
-        if (svc) {
-          const i = Math.max(0, at(new RegExp(' ' + norm(svc[0]).trim().split(' ')[0].replace(/s$/, '') + '\\w* ')));
-          parts.push({ i, text: svc[0].charAt(0).toUpperCase() + svc[0].slice(1) + ' is one of the things people mention in our Google reviews (' + svc[1] + ' reviews). I do not have prices or appointment times, so call or text ' + phone + ' to ask.', acts: contactActs });
-        } else {
-          const list = (biz.services || []).map((s) => s[0] + ' (' + s[1] + ' reviews)').join(', ');
-          push(listRx, list ? 'What reviewers mention most: ' + list + '. For the full list and prices, call or text ' + phone + '.' : 'Call or text ' + phone + ' to ask what we offer.', contactActs);
-        }
+      const noPrices = price < 0 && book < 0; // when prices/booking were asked, the handoff part already says so
+      const listAsked = / (services?|offer|menu|specialt(y|ies)) /.test(q);
+      if (listAsked || !svcs.length) {
+        const list = (biz.services || []).map((s) => s[0] + ' (' + s[1] + ' reviews)').join(', ');
+        push(listAsked ? / (services?|offer|menu|specialt(y|ies)) / : listRx, list ? 'What reviewers mention most: ' + list + '.' + (noPrices ? ' For the full list and prices, call or text ' + phone + '.' : '') : 'Call or text ' + phone + ' to ask what we offer.', contactActs);
+      } else {
+        const named = svcs.map((s) => s[0] + ' (' + s[1] + ' reviews)');
+        const list = named.length > 1 ? named.slice(0, -1).join(', ') + ' and ' + named[named.length - 1] : named[0];
+        parts.push({ i: Math.max(0, at(new RegExp(' ' + norm(svcs[0][0]).trim().split(' ')[0].replace(/s$/, '') + '\\w* '))),
+          text: list.charAt(0).toUpperCase() + list.slice(1) + (svcs.length > 1 ? ' are things' : ' is one of the things') + ' people mention in our Google reviews.' + (noPrices ? ' I do not have prices or appointment times, so call or text ' + phone + ' to ask.' : ''), acts: contactActs });
       }
       if (biz.rating)
         push(/ (rating|rated|reviews?|stars?|good|best|recommend|people say|reputation) /, biz.rating + ' stars on Google from ' + biz.reviews + ' reviews. Reviewers mention ' + (biz.services || []).map((s) => s[0]).join(', ') + '.', [{ label: 'Read the reviews', href: biz.maps_url }]);
 
-      // hours: named days, the full schedule, or open/close now
-      const dr = dayRefs(q), openClose = at(/ (open|opened|opens|opening|close|closed|closes|closing|late|early) /), hoursWord = at(/ (hours|schedule|opening times|business hours|timings?) /);
-      if (dr.length || hoursWord >= 0 || openClose >= 0) {
-        if (!known) parts.push({ i: Math.max(0, hoursWord, openClose), text: noHours.text, acts: noHours.acts });
-        else if (dr.length) {
+      // hours: each clause of the question ("... and ...", "... or ...") is answered on its own
+      // (same-length rewrites keep positions comparable with the other parts)
+      const hq = q.replace(/ (opening|open|business|closing) (hours|times) /g, (m, a, b) => ' ' + '_'.repeat(a.length) + ' hours ')
+        .replace(/ (open|opens|opening) (and|or) (close|closes|closing) /g, (m) => m.replace(' and ', '_and_').replace(' or ', '_or_'));
+      const clauses = []; { let st = 0, m; const sep = / (and|or) /g; while ((m = sep.exec(hq))) { clauses.push([st, hq.slice(st, m.index) + ' ']); st = m.index + m[0].length - 1; } clauses.push([st, hq.slice(st)]); }
+      let plainStatus = false;
+      clauses.forEach(([off, c]) => {
+        const hw = / (hours|schedule|timings?) /.exec(c), dr = dayRefs(c), oc = / (open|open_and_close|open_or_close|opened|opens|opening|close|closed|closes|closing|late|early) /.exec(c);
+        if (!hw && !dr.length && !oc) return;
+        if (!known) { parts.push({ i: off + Math.max(0, hw ? hw.index : 0, oc ? oc.index : 0), text: noHours.text, acts: noHours.acts }); return; }
+        if (hw) parts.push({ i: off + hw.index, text: hoursSummary() });
+        if (dr.length) {
           let text = dayAnswer(dr).text;
-          if (R(/ (now|currently) /)) { const s = status(); text = (s.open ? "We're open now, until " + s.closes + '.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '')) + '\n' + text; }
-          parts.push({ i: Math.max(0, openClose, hoursWord, at(/ (today|tonight|tomorrow|weekends?|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)s? /)), text });
-        } else if (hoursWord >= 0) parts.push({ i: hoursWord, text: hoursSummary() });
-        else {
-          const s = status(), asksOpen = R(/ (open|opens|opening) /) && R(/ (what time|when) /), asksClose = R(/ (close|closes|closing) /), onlyClosed = R(/ closed /) && !R(/ open /);
+          if (/ (now|currently) /.test(c)) { const s = status(); text = (s.open ? "We're open now, until " + s.closes + '.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '')) + '\n' + text; }
+          parts.push({ i: off + Math.max(0, oc ? oc.index : 0, (/ (today|tonight|tomorrow|weekends?|monday|tuesday|wednesday|thursday|friday|saturday|sunday|mon|tue|wed|thu|fri|sat|sun)s? /.exec(c) || { index: 0 }).index), text });
+        } else if (oc) {
+          const s = status(), both = /open_(and|or)_close/.test(c);
+          const asksOpen = both || (/ (open|opens|opening) /.test(c) && / (what time|when) /.test(c)), asksClose = both || / (close|closes|closing) /.test(c);
+          const onlyClosed = / closed /.test(c) && !/ open /.test(c);
+          if (!asksOpen && !asksClose) { if (plainStatus) return; plainStatus = true; } // one open-now answer, even for "open and closed?"
           let text;
           if (s.open) {
-            if (asksOpen && asksClose) text = dayAnswer([todayIdx()]).text;
-            else if (asksOpen) text = dayAnswer([todayIdx()]).text;
+            if (asksOpen) text = dayAnswer([todayIdx()]).text;
             else if (onlyClosed) text = "No, we're open now. We close at " + s.closes + ' today.';
-            else text = asksClose && !R(/ (open|now) /) ? 'We close at ' + s.closes + ' today.' : "Yes, we're open now. We close at " + s.closes + ' today.';
+            else text = asksClose && !/ (open|now) /.test(c) ? 'We close at ' + s.closes + ' today.' : "Yes, we're open now. We close at " + s.closes + ' today.';
           } else if (s.next) {
-            text = asksOpen && asksClose ? 'We open ' + when(s.next) + ' at ' + s.next.at + ' and close at ' + s.next.end + '.'
-              : asksOpen || asksClose ? 'We open ' + when(s.next) + ' at ' + s.next.at + (asksClose ? ' and close at ' + s.next.end : '') + '.'
+            text = asksOpen || asksClose ? 'We open ' + when(s.next) + ' at ' + s.next.at + (asksClose ? ' and close at ' + s.next.end : '') + '.'
               : (onlyClosed ? 'Yes, we are closed right now. ' : 'We are closed right now. ') + 'We open ' + when(s.next) + ' at ' + s.next.at + '.';
           } else text = 'Call or text for our hours.';
-          parts.push({ i: openClose, text });
+          parts.push({ i: off + oc.index, text });
         }
-      }
+      });
 
       if (!parts.length) return handoff;
       parts.sort((a, b) => a.i - b.i);
+      for (let k = parts.length - 1; k > 0; k--) if (parts.slice(0, k).some((x) => x.text === parts[k].text)) parts.splice(k, 1);
       const acts = [];
       parts.forEach((p) => (p.acts || []).forEach((a) => { if (!acts.some((x) => x.href === a.href)) acts.push(a); }));
       return { text: parts.map((p) => p.text).join('\n'), acts: acts.length ? acts : undefined };

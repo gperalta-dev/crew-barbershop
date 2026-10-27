@@ -1,7 +1,7 @@
-# Chat widget test, 2026-10-27 (rev 4, after LOC-26 rejection)
+# Chat widget test, 2026-10-27 (rev 5, after LOC-27 rejection)
 
 Playwright + Edge, local build of index.html, clock faked to Tue Oct 27 2026 12:00 and 21:00 America/Edmonton. Script: money-town/tools/chat_test.mjs
-answer() now merges every intent in a question (compound questions), social replies only for social-only messages, any digit hands off first. Regression cases from LOC-24/25/26 included.
+answer() merges every intent in a question; hours are answered per clause; multi-service questions list every named service; identity is a mergeable part. Also checked with a generated pair test (every ordered pair of 15 single intents joined with 'and' / ', and': 420 questions, each part present). Regression cases from LOC-24/25/26/27 included.
 
 ```
 PASS 390: fab visible and inside viewport  {"x":266.15625,"y":718,"width":111.84375,"height":48}
@@ -13,6 +13,7 @@ PASS 390: input font >= 16px (no iOS zoom)  16px
 PASS 390: Hours chip answers from data  "Mon to Fri: 9:30 a.m. to 8 p.m.\nSaturday: 9:30 a.m. to 7 p.m.\nSunday: 11 a.m. to 6 p.m."
 PASS 390: address answer + directions link  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.Get directionsOpen in Maps
 PASS 390: price/booking hands off  I don't have prices or payment details, and I can't book or check the wait. Call or text (780) 935-2002 and we'll sort it out.
+Fades (25 reviews) is one of the things people mention in our Google reviews.
 Saturday we're open 9:30 a.m. to 7 p.m.Call (780) 935-2002Text
 PASS 390: handoff has sms link  sms:+17809352002
 PASS 390: no doubled periods in transcript
@@ -28,6 +29,7 @@ PASS 1280: input font >= 16px (no iOS zoom)  16px
 PASS 1280: Hours chip answers from data  "Mon to Fri: 9:30 a.m. to 8 p.m.\nSaturday: 9:30 a.m. to 7 p.m.\nSunday: 11 a.m. to 6 p.m."
 PASS 1280: address answer + directions link  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.Get directionsOpen in Maps
 PASS 1280: price/booking hands off  I don't have prices or payment details, and I can't book or check the wait. Call or text (780) 935-2002 and we'll sort it out.
+Fades (25 reviews) is one of the things people mention in our Google reviews.
 Saturday we're open 9:30 a.m. to 7 p.m.Call (780) 935-2002Text
 PASS 1280: handoff has sms link  sms:+17809352002
 PASS 1280: no doubled periods in transcript
@@ -51,11 +53,12 @@ PASS Q "how do I get there" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4
 PASS Q "phone number?" @open  Call or text (780) 935-2002.
 PASS Q "can I text you" @open  Call or text (780) 935-2002.
 PASS Q "what services do you offer" @open  What reviewers mention most: fades (25 reviews), beard trim (12 reviews), haircuts for kids (3 reviews). For the full list and prices, call or text (780) 935-2002.
-PASS Q "do you do fades" @open  Fades is one of the things people mention in our Google reviews (25 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
-PASS Q "my son needs a haircut" @open  Haircuts for kids is one of the things people mention in our Google reviews (3 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
-PASS Q "beard" @open  Beard trim is one of the things people mention in our Google reviews (12 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "do you do fades" @open  Fades (25 reviews) is one of the things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "my son needs a haircut" @open  Haircuts for kids (3 reviews) is one of the things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "beard" @open  Beard trim (12 reviews) is one of the things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
 PASS Q "are you any good" @open  4.5 stars on Google from 737 reviews. Reviewers mention fades, beard trim, haircuts for kids.
 PASS Q "how much is a fade" @open  I don't have prices or payment details. Call or text (780) 935-2002 and we'll quote you.
+Fades (25 reviews) is one of the things people mention in our Google reviews.
 PASS Q "do you take walk-ins" @open  I can't book or check the wait. Call or text (780) 935-2002 and we'll sort it out.
 PASS Q "is there parking" @open  I don't have that on our listing. Call or text (780) 935-2002 and we'll tell you.
 PASS Q "do you do hot towel shaves" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
@@ -84,7 +87,7 @@ PASS Q "are you open today and tomorrow" @open  Today (Tuesday) we're open 9:30 
 Wednesday we're open 9:30 a.m. to 8 p.m.
 PASS Q "is it closed" @open  No, we're open now. We close at 8 p.m. today.
 PASS Q "is it closed" @closed  Yes, we are closed right now. We open tomorrow at 9:30 a.m.
-PASS Q "open now and tomorrow" @open  We're open now, until 8 p.m.
+PASS Q "open now and tomorrow" @open  Yes, we're open now. We close at 8 p.m. today.
 Wednesday we're open 9:30 a.m. to 8 p.m.
 PASS Q "are you open next week" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
 PASS Q "are you open 24/7" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
@@ -104,6 +107,7 @@ PASS Q "Are you open tomorrow and where are you located?" @open  Wednesday we're
 We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
 PASS Q "where are you and how much is a fade" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
 I don't have prices or payment details. Call or text (780) 935-2002 and we'll quote you.
+Fades (25 reviews) is one of the things people mention in our Google reviews.
 PASS Q "what is your number and what services do you offer" @open  Call or text (780) 935-2002.
 What reviewers mention most: fades (25 reviews), beard trim (12 reviews), haircuts for kids (3 reviews). For the full list and prices, call or text (780) 935-2002.
 PASS Q "are you open now and is there parking" @open  Yes, we're open now. We close at 8 p.m. today.
@@ -112,10 +116,39 @@ PASS Q "what are your hours and are you any good" @open  Mon to Fri: 9:30 a.m. t
 Saturday: 9:30 a.m. to 7 p.m.
 Sunday: 11 a.m. to 6 p.m.
 4.5 stars on Google from 737 reviews. Reviewers mention fades, beard trim, haircuts for kids.
+PASS Q "What are your hours and are you open tomorrow?" @open  Mon to Fri: 9:30 a.m. to 8 p.m.
+Saturday: 9:30 a.m. to 7 p.m.
+Sunday: 11 a.m. to 6 p.m.
+Wednesday we're open 9:30 a.m. to 8 p.m.
+PASS Q "Are you open now and what are your hours?" @open  Yes, we're open now. We close at 8 p.m. today.
+Mon to Fri: 9:30 a.m. to 8 p.m.
+Saturday: 9:30 a.m. to 7 p.m.
+Sunday: 11 a.m. to 6 p.m.
+PASS Q "Are you open now and what are your hours?" @closed  We are closed right now. We open tomorrow at 9:30 a.m.
+Mon to Fri: 9:30 a.m. to 8 p.m.
+Saturday: 9:30 a.m. to 7 p.m.
+Sunday: 11 a.m. to 6 p.m.
+PASS Q "what are your opening hours" @open  Mon to Fri: 9:30 a.m. to 8 p.m.
+Saturday: 9:30 a.m. to 7 p.m.
+Sunday: 11 a.m. to 6 p.m.
+PASS Q "Do you do fades and beard trims?" @open  Fades (25 reviews) and beard trim (12 reviews) are things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "Do you do beard trims and fades?" @open  Beard trim (12 reviews) and fades (25 reviews) are things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "fades, beard trim and kids haircuts" @open  Fades (25 reviews), beard trim (12 reviews) and haircuts for kids (3 reviews) are things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "Are you a robot and where are you located?" @open  I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.
+We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
+PASS Q "where are you located and are you a robot" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
+I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.
+PASS Q "Are you a robot and can you deliver pizza tomorrow?" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "where are you and are you open on christmas" @open  I don't have holiday hours. Call or text (780) 935-2002 to check before you come.
+PASS Q "are you open now and what time do you close?" @open  Yes, we're open now. We close at 8 p.m. today.
+We close at 8 p.m. today.
+PASS Q "what services do you offer and do you do beard trims?" @open  What reviewers mention most: fades (25 reviews), beard trim (12 reviews), haircuts for kids (3 reviews). For the full list and prices, call or text (780) 935-2002.
+PASS Q "do you do fades and how much is it" @open  Fades (25 reviews) is one of the things people mention in our Google reviews.
+I don't have prices or payment details. Call or text (780) 935-2002 and we'll quote you.
 PASS Q "what time do you guys close on saturdays?" @open  Saturday we're open 9:30 a.m. to 7 p.m.
 PASS Q "is the shop open right now?" @open  Yes, we're open now. We close at 8 p.m. today.
-PASS Q "Can I get a fade?" @open  Fades is one of the things people mention in our Google reviews (25 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
-PASS Q "do you cut kids hair" @open  Haircuts for kids is one of the things people mention in our Google reviews (3 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "Can I get a fade?" @open  Fades (25 reviews) is one of the things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
+PASS Q "do you cut kids hair" @open  Haircuts for kids (3 reviews) is one of the things people mention in our Google reviews. I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
 PASS Q "what is the address of Crew Barber Shop" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
 PASS Q "asdf qwerty" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
 PASS Q "are you a robot?" @open  I'm an automated assistant. I only know what's on our Google listing: hours, address, phone and what people say about us. For anything else, call or text and a person will help.
@@ -125,7 +158,7 @@ PASS Q "<img src=x onerror=alert(1)>" @open  I don't have that. I only know our 
 PASS typed HTML is shown as text, not executed
 PASS closed: header says closed + next open  Closed now, opens tomorrow at 9:30 a.m.
 
-101/101 passed
+115/115 passed
 ```
 
 Screenshots: chat-390-*.png, chat-1280-*.png (incl. *-4-compound-questions.png)
