@@ -40,7 +40,7 @@
   .nav-call svg { width: 18px; height: 18px; }
 
   /* hero */
-  .hero { position: relative; min-height: 100vh; min-height: 100svh; background: radial-gradient(1200px 700px at 78% 20%, var(--bg-2), transparent 60%), var(--bg); color: var(--on-dark); display: flex; align-items: center; overflow: hidden; }
+  .hero { position: relative; min-height: min(100vh, 880px); min-height: min(100svh, 880px); background: radial-gradient(1200px 700px at 78% 20%, var(--bg-2), transparent 60%), var(--bg); color: var(--on-dark); display: flex; align-items: center; overflow: hidden; }
   .hero::before { content: ""; position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px); background-size: 26px 26px; mask-image: linear-gradient(to bottom, black, transparent 85%); }
   .hero .wrap { position: relative; display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center; padding: 120px 0 80px; }
   .where { display: inline-flex; align-items: center; gap: 10px; color: var(--accent); font-weight: 600; font-size: 15px; margin-bottom: 18px; }
@@ -139,6 +139,8 @@
 
 
   /* real photos */
+  .k-sample { position: absolute; z-index: 2; left: 16px; top: 16px; padding: 4px 11px; border-radius: 999px; background: rgba(10, 12, 16, 0.66); color: #fff; font: 600 12.5px/1.35 system-ui, sans-serif; letter-spacing: 0.01em; pointer-events: none; }
+  figure { position: relative; }
   .hero-photo { position: absolute; top: 6%; right: 4%; width: 74%; height: 78%; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); }
   .hero-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(0.95); transform: scale(1.04); animation: kenburns 18s ease-in-out infinite alternate; }
   .hero-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(200deg, transparent 40%, color-mix(in srgb, var(--bg) 55%, transparent)); }
@@ -292,7 +294,7 @@
       <div class="trust"><span class="stars"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></span><span>4.5 on Google from 737 reviews</span></div>
     </div>
     <div class="show" aria-hidden="true">
-      <div class="hero-photo"><img src="img/photo-1.jpg" alt=""></div>
+      <div class="hero-photo"><span class="k-sample">Sample photo</span><img src="img/photo-1.jpg" alt=""></div>
       <div class="card c-status">
         <div class="lbl">Right now</div>
         <div class="state"><i class="dot" id="hero-dot"></i><span id="hero-state">Open</span></div>
@@ -311,8 +313,8 @@
   <section class="block" id="prices">
     <div class="wrap">
       <div class="eyebrow">Services and prices</div>
-      <h2>Known for fades.</h2>
-      <div class="prices"><div class="tier"><span class="tag">Popular</span><h3>Beard trim</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it on the spot.</p><ul><li><i></i>Mentioned in 12 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div><div class="tier top"><span class="tag">Most mentioned on Google</span><h3>Fades</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it on the spot.</p><ul><li><i></i>Mentioned in 25 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-primary" href="tel:+17809352002">Call to book</a></div><div class="tier"><span class="tag">Popular</span><h3>Haircuts for kids</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it on the spot.</p><ul><li><i></i>Mentioned in 3 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div></div>
+      <h2>Services.</h2>
+      <div class="prices"><div class="tier"><span class="tag">Popular</span><h3>Beard trim</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it.</p><ul><li><i></i>Mentioned in 12 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div><div class="tier top"><span class="tag">Most mentioned on Google</span><h3>Fades</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it.</p><ul><li><i></i>Mentioned in 25 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-primary" href="tel:+17809352002">Call to book</a></div><div class="tier"><span class="tag">Popular</span><h3>Haircuts for kids</h3><div class="price">Ask<small> for today's price</small></div><p class="why">Call and we'll quote it.</p><ul><li><i></i>Mentioned in 3 Google reviews</li><li><i></i>Book by phone</li><li><i></i>Mill Woods, Edmonton</li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div></div>
     </div>
   </section>
 
@@ -320,7 +322,7 @@
     <div class="wrap">
       <div class="eyebrow">Gallery</div>
       <h2>A look inside.</h2>
-      <div class="gallery"><figure class="shot photo"><img src="img/photo-1.jpg" alt="Fades" loading="lazy"><figcaption>Fades</figcaption></figure><figure class="shot photo"><img src="img/photo-2.jpg" alt="Beard trim" loading="lazy"><figcaption>Beard trim</figcaption></figure><figure class="shot photo"><img src="img/photo-3.jpg" alt="Haircuts for kids" loading="lazy"><figcaption>Haircuts for kids</figcaption></figure><figure class="shot photo"><img src="img/photo-4.jpg" alt="Barber shop" loading="lazy"><figcaption>Barber shop</figcaption></figure></div>
+      <div class="gallery"><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-1.jpg" alt="Fades" loading="lazy"><figcaption>Fades</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-2.jpg" alt="Beard trim" loading="lazy"><figcaption>Beard trim</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-3.jpg" alt="Haircuts for kids" loading="lazy"><figcaption>Haircuts for kids</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-4.jpg" alt="Barber shop" loading="lazy"><figcaption>Barber shop</figcaption></figure></div>
     </div>
   </section>
 
@@ -328,7 +330,7 @@
     <div class="wrap grid-2">
       <div>
         <div class="eyebrow">Hours</div>
-        <h2>Come in when it suits you.</h2>
+        <h2>Call to confirm availability.</h2>
         <p class="live"><i class="dot" id="hours-dot"></i><span id="hours-state"></span></p>
       </div>
       <div class="hours" id="hours-table"></div>
@@ -408,7 +410,8 @@
       if (!b) return null;
       let s = toMin(a), e = toMin(b);
       if (s == null || e == null) return null;
-      if (!/[ap]\.?m/i.test(a) && /p\.?m/i.test(b) && s + 720 < e) s += 0;
+      // "4 to 8 p.m.": the start has no a.m./p.m., so it takes the end's. if that puts it after the end ("11 to 2 p.m."), it is the morning
+      if (!/[ap]\.?m/i.test(a) && /[ap]\.?m/i.test(b)) { if (/p\.?m/i.test(b) && s < 720) s += 720; if (s >= e && s >= 720) s -= 720; }
       if (e <= s) e += 1440;
       return [s, e];
     }).filter(Boolean);
