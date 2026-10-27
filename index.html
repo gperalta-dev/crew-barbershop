@@ -87,6 +87,55 @@
   .topic .bar span { display: block; height: 100%; width: 0; background: var(--accent); border-radius: inherit; transition: width 1.4s cubic-bezier(.2, .7, .2, 1); }
   .topic em { font-style: normal; color: var(--muted); font-weight: 500; font-size: 13px; }
 
+
+  /* hero illustration */
+  .art { position: absolute; right: -4%; top: 50%; width: min(760px, 62vw); transform: translateY(-46%); color: var(--accent); opacity: 0.22; pointer-events: none; animation: drift 14s ease-in-out infinite; }
+  .art svg { width: 100%; height: auto; display: block; }
+  @keyframes drift { 0%, 100% { transform: translateY(-46%) rotate(0deg); } 50% { transform: translateY(-49%) rotate(-1.5deg); } }
+
+  /* stats band */
+  .stats-band { background: var(--bg); color: var(--on-dark); border-top: 1px solid rgba(255,255,255,0.06); }
+  .stats-band .wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 44px 0; }
+  .stat b { display: block; font: 800 clamp(40px, 5vw, 64px)/1 "Bricolage Grotesque", sans-serif; color: var(--accent); }
+  .stat span { color: var(--on-dark-muted); font-size: 16px; }
+
+  /* prices */
+  .prices { display: grid; grid-template-columns: 1fr 1.08fr 1fr; gap: 16px; margin-top: 36px; align-items: stretch; }
+  .tier { background: #fff; border: 1px solid var(--line); border-radius: 22px; padding: 28px 26px; display: flex; flex-direction: column; transition: transform 200ms ease, box-shadow 200ms ease; }
+  .tier:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(10, 20, 30, 0.1); }
+  .tier .tag { align-self: flex-start; font-size: 13px; font-weight: 700; border-radius: 999px; padding: 4px 11px; background: color-mix(in srgb, var(--accent) 18%, #fff); color: var(--ink); margin-bottom: 14px; }
+  .tier h3 { font-size: 24px; }
+  .tier .price { font: 800 40px/1 "Bricolage Grotesque", sans-serif; margin: 14px 0 4px; }
+  .tier .price small { font: 600 15px/1 "Figtree", sans-serif; color: var(--muted); }
+  .tier .why { color: var(--muted); font-size: 15px; margin: 0 0 18px; }
+  .tier ul { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 10px; font-size: 15.5px; }
+  .tier li { display: flex; gap: 10px; align-items: flex-start; }
+  .tier li i { flex: none; width: 20px; height: 20px; border-radius: 6px; margin-top: 2px; background: color-mix(in srgb, var(--accent) 22%, #fff); position: relative; }
+  .tier li i::after { content: ""; position: absolute; left: 6px; top: 3px; width: 5px; height: 9px; border: solid var(--bg); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  .tier .btn { margin-top: auto; }
+  .tier.top { background: var(--bg); color: var(--on-dark); border-color: transparent; transform: scale(1.03); box-shadow: 0 24px 60px rgba(5, 10, 15, 0.3); }
+  .tier.top:hover { transform: scale(1.03) translateY(-4px); }
+  .tier.top .tag { background: var(--accent); color: var(--accent-ink); }
+  .tier.top .price small, .tier.top .why { color: var(--on-dark-muted); }
+  .tier.top li i { background: var(--accent); }
+  .tier.top li i::after { border-color: var(--accent-ink); }
+  .ph { color: var(--muted); font-style: italic; }
+  .tier.top .ph { color: var(--on-dark-muted); }
+
+  /* gallery */
+  .gallery { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: 220px 220px; gap: 14px; margin-top: 34px; }
+  .shot { border-radius: 20px; position: relative; overflow: hidden; display: grid; place-items: center; text-align: center; color: var(--muted); font-weight: 600; font-size: 15px;
+    background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, #fff) 0 14px, #fff 14px 28px); border: 1.5px dashed color-mix(in srgb, var(--accent) 55%, #999); transition: transform 220ms ease; }
+  .shot:hover { transform: scale(1.015); }
+  .shot:first-child { grid-row: span 2; }
+  .shot svg { width: 34px; height: 34px; display: block; margin: 0 auto 8px; color: var(--bg); opacity: 0.6; transition: transform 300ms ease; }
+  .shot:hover svg { transform: translateY(-3px) rotate(-6deg); }
+
+  /* quote placeholders */
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 26px 0; }
+  .quote { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 16px; padding: 18px; font-size: 15px; color: var(--on-dark-muted); }
+  .quote b { display: block; color: var(--on-dark); margin-top: 10px; font-weight: 600; }
+
   /* sections */
   section.block { padding: 96px 0; }
   .eyebrow { color: var(--muted); font-weight: 600; margin-bottom: 10px; }
@@ -144,6 +193,13 @@
     .show { height: auto; display: grid; gap: 14px; }
     .card { position: static; width: auto !important; animation: none; }
     .c-topics { display: none; }
+    .art { width: 120vw; right: -40vw; opacity: 0.12; }
+    .stats-band .wrap { grid-template-columns: 1fr; gap: 18px; padding: 34px 0; }
+    .prices { grid-template-columns: 1fr; }
+    .tier.top { transform: none; } .tier.top:hover { transform: translateY(-4px); }
+    .gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 200px 140px 140px; }
+    .shot:first-child { grid-column: span 2; grid-row: auto; }
+    .quotes { grid-template-columns: 1fr; }
     .grid-2, .reviews { grid-template-columns: 1fr; gap: 28px; }
     .reviews { padding: 34px 24px; }
     .reviews .score { font-size: 72px; }
@@ -171,6 +227,11 @@
 </nav>
 
 <header class="hero" id="top">
+  <div class="art" aria-hidden="true"><svg viewBox="0 0 600 520" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+<rect x="470" y="40" width="44" height="300" rx="22"/><path d="M470 80l44 40M470 140l44 40M470 200l44 40M470 260l44 40"/><circle cx="492" cy="28" r="14"/><circle cx="492" cy="356" r="14"/>
+<path d="M150 230h170a30 30 0 0 1 30 30v40H120v-40a30 30 0 0 1 30-30z"/><path d="M170 230V120a40 40 0 0 1 40-40h50a40 40 0 0 1 40 40v110"/><path d="M110 300h260M140 300l-20 60M340 300l20 60"/>
+<path d="M235 360v90M175 470h120"/><path d="M100 300v-40h30M370 300v-40h-30"/>
+<circle cx="70" cy="400" r="24"/><circle cx="70" cy="470" r="24"/><path d="M92 390l110-70M92 480l110 70" transform="translate(0,-40)"/></svg></div>
   <div class="wrap">
     <div>
       <div class="where">Mill Woods, Edmonton</div>
@@ -196,12 +257,22 @@
 </header>
 
 <main>
-  <section class="block" id="services">
+  <section class="stats-band"><div class="wrap"><div class="stat"><b>4.5</b><span>Google rating</span></div><div class="stat"><b>737</b><span>Google reviews</span></div><div class="stat"><b>7 days</b><span>open a week</span></div></div></section>
+
+  <section class="block" id="prices">
     <div class="wrap">
-      <div class="eyebrow">What people come for</div>
+      <div class="eyebrow">Services and prices</div>
       <h2>Known for fades.</h2>
-      <div class="services"><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Fades</h3><p>Mentioned in 25 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Attention to detail</h3><p>Mentioned in 16 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Beard trim</h3><p>Mentioned in 12 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Fresh cut</h3><p>Mentioned in 11 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Kind staff</h3><p>Mentioned in 8 Google reviews.</p></div><div class="svc"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="7" r="3"/><circle cx="6" cy="17" r="3"/><path d="M8.5 8.5 20 19M8.5 15.5 20 5"/></svg></div><h3>Talented barbers</h3><p>Mentioned in 4 Google reviews.</p></div></div>
-      <p class="ask">Ask for the full list of services and prices when you call.</p>
+      <div class="prices"><div class="tier"><span class="tag">Popular</span><h3>Beard trim</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 12 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div><div class="tier top"><span class="tag">Most mentioned on Google</span><h3>Fades</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i>Mentioned in 25 Google reviews</li><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-primary" href="tel:+17809352002">Call to book</a></div><div class="tier"><span class="tag">[Service]</span><h3>[Service]</h3><div class="price">[$ price]<small> [per visit]</small></div><p class="why">[One line on what this includes]</p><ul><li><i></i><span class="ph">[What is included]</span></li><li><i></i><span class="ph">[How long it takes]</span></li></ul><a class="btn btn-outline" href="tel:+17809352002">Call to book</a></div></div>
+      <p class="ask">Prices in [brackets] are placeholders until Crew Barber Shop confirms them.</p>
+    </div>
+  </section>
+
+  <section class="block" id="gallery" style="padding-top: 0">
+    <div class="wrap">
+      <div class="eyebrow">Gallery</div>
+      <h2>See the work.</h2>
+      <div class="gallery"><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: inside the shop]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: fades]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: beard trim]</div></div><div class="shot"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>[Photo: the team]</div></div></div>
     </div>
   </section>
 
@@ -216,7 +287,7 @@
     </div>
   </section>
 
-  <section class="block" style="padding-top:0"><div class="wrap"><div class="reviews"><div class="score">4.5</div><div><h2>737 people have reviewed Crew Barber Shop on Google.</h2><p>What reviewers mention most, with how many reviews mention it:</p><div class="chips"><span class="chip">fades<em>25</em></span><span class="chip">attention to detail<em>16</em></span><span class="chip">beard trim<em>12</em></span><span class="chip">fresh cut<em>11</em></span><span class="chip">kind staff<em>8</em></span><span class="chip">talented barbers<em>4</em></span></div><a class="btn btn-primary" href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read the reviews</a></div></div></div></section>
+  <section class="block" style="padding-top:0"><div class="wrap"><div class="reviews"><div class="score">4.5</div><div><h2>737 people have reviewed Crew Barber Shop on Google.</h2><p>What reviewers mention most, with how many reviews mention it:</p><div class="chips"><span class="chip">fades<em>25</em></span><span class="chip">attention to detail<em>16</em></span><span class="chip">beard trim<em>12</em></span><span class="chip">fresh cut<em>11</em></span><span class="chip">kind staff<em>8</em></span><span class="chip">talented barbers<em>4</em></span></div><div class="quotes"><div class="quote">[CLIENT QUOTE: a short review the owner picks]<b>[Client name], Google review</b></div><div class="quote">[CLIENT QUOTE: a short review the owner picks]<b>[Client name], Google review</b></div><div class="quote">[CLIENT QUOTE: a short review the owner picks]<b>[Client name], Google review</b></div></div><a class="btn btn-primary" href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Read the reviews</a></div></div></div></section>
 
   <section class="block" id="find">
     <div class="wrap grid-2">
