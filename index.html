@@ -509,16 +509,24 @@
         norm(name).trim().split(' ').some((tok) => tok.length > 2 && !GENERIC.includes(tok) && words.includes(stem(tok))) ||
         (/kid/.test(name) && words.some((w) => /^(kid|child|children|boy|son|toddler)$/.test(w))));
     }
-    function dayRef(q) {
-      if (/ (today|tonight) /.test(q)) return todayIdx();
-      if (/ tomorrow /.test(q)) return (todayIdx() + 1) % 7;
-      const i = DAYS.findIndex((d) => new RegExp(' (' + d.toLowerCase() + '|' + d.toLowerCase().slice(0, 3) + ')s? ').test(q));
-      return i >= 0 ? i : null;
+    // every day the question names, in the order asked ("today", "tomorrow", day names, "weekend")
+    function dayRefs(q) {
+      const found = [];
+      const add = (k, at) => { if (!found.some((f) => f.k === k)) found.push({ k, at }); };
+      const at = (rx) => { const m = rx.exec(q); return m ? m.index : -1; };
+      let i;
+      if ((i = at(/ (today|tonight) /)) >= 0) add(todayIdx(), i);
+      if ((i = at(/ tomorrow /)) >= 0) add((todayIdx() + 1) % 7, i);
+      if ((i = at(/ weekends? /)) >= 0) { add(5, i); add(6, i); }
+      DAYS.forEach((d, k) => { if ((i = at(new RegExp(' (' + d.toLowerCase() + '|' + d.toLowerCase().slice(0, 3) + ')s? '))) >= 0) add(k, i); });
+      return found.sort((a, b) => a.at - b.at).map((f) => f.k);
     }
-    function dayAnswer(k) {
+    function dayAnswer(ks) {
       if (!known) return noHours;
-      const h = hoursOf(k), name = k === todayIdx() ? 'Today (' + DAYS[k] + ')' : DAYS[k];
-      return { text: spans(h).length ? name + " we're open " + h + '.' : 'We are closed on ' + DAYS[k] + '.' };
+      return { text: ks.map((k) => {
+        const h = hoursOf(k), name = k === todayIdx() ? 'Today (' + DAYS[k] + ')' : DAYS[k];
+        return spans(h).length ? name + " we're open " + h + '.' : 'We are closed on ' + DAYS[k] + '.';
+      }).join('\n') };
     }
 
     // words the assistant understands. a question with any other word is handed off, never answered from a keyword match
@@ -549,7 +557,8 @@
       // holidays and anything we have no data for: hand off instead of guessing from a keyword
       if (R(/ (christmas|xmas|boxing day|easter|thanksgiving|halloween|new years?|canada day|victoria day|labou?r day|remembrance|family day|good friday|holidays?|stat|long weekend) /))
         return { text: "I don't have holiday hours. Call or text " + phone + " to check before you come.", acts: contactActs };
-      if (unknownWords(q).length) return handoff;
+      // dates and clock times (12/25, 2026-12-25, 5pm) are not in the data: never answer them with today's status
+      if (/\d/.test(raw) || unknownWords(q).length) return handoff;
       if (R(/ (phone|number|call|text|contact|reach|email|dm|message|instagram|facebook) /))
         return { text: 'Call or text ' + phone + '.', acts: contactActs };
       if (R(/ (where|address|location|directions?|map|maps|find you|get there|located|street|how do i get|near|nearby) /))
@@ -563,14 +572,24 @@
       }
       if (biz.rating && R(/ (rating|rated|reviews?|stars?|good|best|recommend|people say|reputation) /))
         return { text: biz.rating + ' stars on Google from ' + biz.reviews + ' reviews. Reviewers mention ' + (biz.services || []).map((s) => s[0]).join(', ') + '.', acts: [{ label: 'Read the reviews', href: biz.maps_url }] };
-      const dr = dayRef(q);
-      if (R(/ (hours|schedule|opening times|business hours|timings?) /) && dr === null)
+      const dr = dayRefs(q);
+      if (R(/ (hours|schedule|opening times|business hours|timings?) /) && !dr.length)
         return known ? { text: hoursSummary() } : noHours;
-      if (dr !== null) return dayAnswer(dr);
-      if (R(/ (open|opened|close|closed|closes|closing|late|early|now|currently|what time) /)) {
+      if (dr.length) {
+        const a = dayAnswer(dr);
+        // "open now and tomorrow": answer both parts
+        if (known && R(/ (now|currently) /)) { const s = status(); a.text = (s.open ? "We're open now, until " + s.closes + '.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '')) + '\n' + a.text; }
+        return a;
+      }
+      if (R(/ (open|opened|opens|opening|close|closed|closes|closing|late|early|now|currently|what time) /)) {
         if (!known) return noHours;
-        const s = status();
-        return { text: s.open ? "Yes, we're open now. We close at " + s.closes + ' today.' : 'We are closed right now.' + (s.next ? ' We open ' + when(s.next) + ' at ' + s.next.at + '.' : '') };
+        const s = status(), asksOpen = R(/ (open|opens|opening) /) && R(/ (what time|when) /), asksClose = R(/ (close|closes|closing) /);
+        if (s.open) {
+          if (asksOpen && !asksClose) return dayAnswer([todayIdx()]);
+          if (R(/ closed /) && !R(/ open /)) return { text: "No, we're open now. We close at " + s.closes + ' today.' };
+          return { text: asksClose && !R(/ (open|now) /) ? 'We close at ' + s.closes + ' today.' : "Yes, we're open now. We close at " + s.closes + ' today.' };
+        }
+        return { text: (asksOpen || asksClose ? '' : R(/ closed /) && !R(/ open /) ? 'Yes, we are closed right now. ' : 'We are closed right now. ') + (s.next ? 'We open ' + when(s.next) + ' at ' + s.next.at + '.' : 'Call or text for our hours.') };
       }
       return handoff;
     }

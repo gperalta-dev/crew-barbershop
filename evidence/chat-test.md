@@ -1,7 +1,7 @@
-# Chat widget test, 2026-10-27 (rev 2, after LOC-24 rejection)
+# Chat widget test, 2026-10-27 (rev 3, after LOC-25 rejection)
 
 Playwright + Edge, local build of index.html, clock faked to Tue Oct 27 2026 12:00 and 21:00 America/Edmonton. Script: money-town/tools/chat_test.mjs
-Added for LOC-24: Christmas/Thanksgiving, pizza delivery, beard transplants, tattoos, dye, perm now hand off; natural phrasings still answered.
+Added for LOC-24/25: holidays, delivery, unsupported services, numeric dates (12/25, 2026-12-25), clock times, 'what time do you open', multi-day questions, 'is it closed', 'open now and tomorrow'.
 
 ```
 PASS 390: fab visible and inside viewport  {"x":266.15625,"y":718,"width":111.84375,"height":48}
@@ -35,15 +35,15 @@ PASS 1280: no JS errors
 PASS 1280: Escape closes and refocuses launcher
 PASS Q "are you open now" @open  Yes, we're open now. We close at 8 p.m. today.
 PASS Q "open?" @open  Yes, we're open now. We close at 8 p.m. today.
-PASS Q "are you open now" @closed  We are closed right now. We open tomorrow at 9:30 a.m..
-PASS Q "what time do you close" @open  Yes, we're open now. We close at 8 p.m. today.
+PASS Q "are you open now" @closed  We are closed right now. We open tomorrow at 9:30 a.m.
+PASS Q "what time do you close" @open  We close at 8 p.m. today.
 PASS Q "What are your hours" @open  Mon to Fri: 9:30 a.m. to 8 p.m.
 Saturday: 9:30 a.m. to 7 p.m.
 Sunday: 11 a.m. to 6 p.m.
-PASS Q "are you open sunday?" @open  Sunday we're open 11 a.m. to 6 p.m..
-PASS Q "open on sat" @open  Saturday we're open 9:30 a.m. to 7 p.m..
-PASS Q "open tomorrow" @open  Wednesday we're open 9:30 a.m. to 8 p.m..
-PASS Q "what about today" @open  Today (Tuesday) we're open 9:30 a.m. to 8 p.m..
+PASS Q "are you open sunday?" @open  Sunday we're open 11 a.m. to 6 p.m.
+PASS Q "open on sat" @open  Saturday we're open 9:30 a.m. to 7 p.m.
+PASS Q "open tomorrow" @open  Wednesday we're open 9:30 a.m. to 8 p.m.
+PASS Q "what about today" @open  Today (Tuesday) we're open 9:30 a.m. to 8 p.m.
 PASS Q "where is the shop" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
 PASS Q "how do I get there" @open  We are at 2331 66 St NW, Edmonton, AB T6K 4B4.
 PASS Q "phone number?" @open  Call or text (780) 935-2002.
@@ -65,7 +65,27 @@ PASS Q "do you do tattoos" @open  I don't have that. I only know our hours, addr
 PASS Q "do you sell hair dye" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
 PASS Q "can I get a perm" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
 PASS Q "is the barber hiring tomorrow" @open  I don't have that on our listing. Call or text and we'll tell you.
-PASS Q "what time do you guys close on saturdays?" @open  Saturday we're open 9:30 a.m. to 7 p.m..
+PASS Q "Are you open on 12/25?" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "Are you open on 2026-12-25?" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "are you open on december 25" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "are you open at 5pm" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "What time do you open?" @open  Today (Tuesday) we're open 9:30 a.m. to 8 p.m.
+PASS Q "What time do you open?" @closed  We open tomorrow at 9:30 a.m.
+PASS Q "when do you open" @closed  We open tomorrow at 9:30 a.m.
+PASS Q "what time do you close" @open  We close at 8 p.m. today.
+PASS Q "Are you open Sunday and Saturday?" @open  Sunday we're open 11 a.m. to 6 p.m.
+Saturday we're open 9:30 a.m. to 7 p.m.
+PASS Q "are you open on the weekend" @open  Saturday we're open 9:30 a.m. to 7 p.m.
+Sunday we're open 11 a.m. to 6 p.m.
+PASS Q "are you open today and tomorrow" @open  Today (Tuesday) we're open 9:30 a.m. to 8 p.m.
+Wednesday we're open 9:30 a.m. to 8 p.m.
+PASS Q "is it closed" @open  No, we're open now. We close at 8 p.m. today.
+PASS Q "is it closed" @closed  Yes, we are closed right now. We open tomorrow at 9:30 a.m.
+PASS Q "open now and tomorrow" @open  We're open now, until 8 p.m.
+Wednesday we're open 9:30 a.m. to 8 p.m.
+PASS Q "are you open next week" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "are you open 24/7" @open  I don't have that. I only know our hours, address, phone and what's in our Google reviews. Call or text (780) 935-2002 and a person will help.
+PASS Q "what time do you guys close on saturdays?" @open  Saturday we're open 9:30 a.m. to 7 p.m.
 PASS Q "is the shop open right now?" @open  Yes, we're open now. We close at 8 p.m. today.
 PASS Q "Can I get a fade?" @open  Fades is one of the things people mention in our Google reviews (25 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
 PASS Q "do you cut kids hair" @open  Haircuts for kids is one of the things people mention in our Google reviews (3 reviews). I do not have prices or appointment times, so call or text (780) 935-2002 to ask.
@@ -78,7 +98,7 @@ PASS Q "<img src=x onerror=alert(1)>" @open  I don't have that. I only know our 
 PASS typed HTML is shown as text, not executed
 PASS closed: header says closed + next open  Closed now, opens tomorrow at 9:30 a.m.
 
-71/71 passed
+87/87 passed
 ```
 
-Screenshots: chat-390-0-closed.png, chat-390-1-conversation.png, chat-390-2-after-hours.png, chat-1280-0-closed.png, chat-1280-1-conversation.png
+Screenshots: chat-390-*.png, chat-1280-*.png (incl. *-3-dates-and-days.png)
