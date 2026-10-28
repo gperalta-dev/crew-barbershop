@@ -71,6 +71,7 @@
   .c-status .state { display: flex; align-items: center; gap: 10px; font: 700 24px/1.1 "Bricolage Grotesque", sans-serif; margin-top: 6px; }
   .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--open); box-shadow: 0 0 0 0 color-mix(in srgb, var(--open) 60%, transparent); animation: pulse 2.2s infinite; }
   .dot.closed { background: var(--closed); animation: none; }
+  .dot.unknown { background: #8a8f98; animation: none; }
   .c-status .sub { color: var(--muted); font-size: 15px; margin-top: 4px; }
   .week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; margin-top: 14px; }
   .week i { display: block; height: 30px; border-radius: 7px; background: #eef0f2; position: relative; }
@@ -155,9 +156,10 @@
   .k-facts b { font-size: 13.5px; font-weight: 700; opacity: 0.7; }
   .k-facts a, .k-facts span { font-size: 18px; font-weight: 600; color: inherit; text-decoration: none; overflow-wrap: anywhere; }
   @media (max-width: 760px) { .k-facts { grid-template-columns: 1fr; gap: 8px; } .k-facts li { padding: 12px 16px; } }
+  .textled .show { display: none; }
   @media (min-width: 901px) {
     .textled .hero .wrap { grid-template-columns: 1fr; max-width: 900px; }
-    .textled .show { display: none; }
+    .textled .hero { min-height: 0; padding-bottom: 24px; }
   }
   .hero-photo .k-sample { top: auto; left: auto; right: 16px; bottom: 16px; }
   .hero-photo { position: absolute; top: 6%; right: 4%; width: 74%; height: 78%; border-radius: 28px; overflow: hidden; box-shadow: var(--shadow); }
@@ -284,6 +286,8 @@
     html { scroll-behavior: auto; }
     .topic .bar span { transition: none; }
   }
+  @media (max-width: 920px) { .textled .hero .wrap { padding-top: 76px; padding-bottom: 20px; } .textled .hero { min-height: 0; } }
+  @media (max-width: 920px) { #prices h2 { font-size: clamp(26px, 7vw, 34px); } }
 </style>
 </head>
 <body class="">
@@ -305,7 +309,7 @@
   <div class="wrap">
     <div>
       <div class="where">Mill Woods, Edmonton</div>
-      <h1>Crew Barber Shop<span>Cuts in Mill Woods.</span></h1>
+      <h1>Crew Barber Shop<span>Cuts, fades and beard trims.</span></h1>
       <p class="lead">Cuts, fades and beard trims inside Mill Woods Town Centre.</p>
       <div class="ctas">
         <a class="btn btn-primary" href="tel:+17809352002"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call (780) 935-2002</a>
@@ -326,21 +330,20 @@
 </header>
 
 <main>
-  <section class="stats-band"><div class="wrap"><div class="stat"><b>4.5</b><span>Google rating</span></div><div class="stat"><b>737</b><span>Google reviews</span></div><div class="stat"><b>7 days</b><span>open a week</span></div></div></section>
+  
   <div class="wrap" style="padding-top:56px; --k-accent-text: var(--accent)"><ul class="k-facts" aria-label="Contact"><li><b>Call</b><a href="tel:+17809352002">(780) 935-2002</a></li><li><b>Address</b><span>2331 66 St NW</span></li><li><b>Today</b><span data-today>Call to check</span></li></ul></div>
 
   <section class="block" id="prices">
     <div class="wrap">
-      <div class="eyebrow">Ask for a price on any of these</div>
-      <h2>Services mentioned in Google reviews.</h2>
-      <ul class="svc-list"><li>Fades<span>Ask for a price</span></li><li>Beard trim<span>Ask for a price</span></li><li>Haircuts for kids<span>Ask for a price</span></li></ul>
+      <h2>Cuts & grooming</h2>
+      <p class="sub">Based on what Google reviewers mention. Call for pricing.</p>
+      <ul class="svc-list"><li>Fades</li><li>Beard trim</li><li>Haircuts for kids</li></ul>
     </div>
   </section>
 
   <section class="block" id="gallery" style="padding-top: 0">
     <div class="wrap">
-      <div class="eyebrow">Gallery</div>
-      <h2>A look inside.</h2>
+      <h2>Sample photos.</h2>
       <div class="gallery"><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-1.jpg" alt="Clippers and guards" loading="lazy"><figcaption>Clippers and guards</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-2.jpg" alt="Beard trim" loading="lazy"><figcaption>Beard trim</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-3.jpg" alt="Haircuts for kids" loading="lazy"><figcaption>Haircuts for kids</figcaption></figure><figure class="shot photo"><span class="k-sample">Sample photo</span><img src="img/photo-4.jpg" alt="Barber shop" loading="lazy"><figcaption>Barber shop</figcaption></figure></div>
     </div>
   </section>
@@ -369,7 +372,7 @@
           <a class="btn btn-outline" href="tel:+17809352002">Call (780) 935-2002</a>
         </div>
       </div>
-      <div class="map"><iframe title="Map showing Crew Barber Shop" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4&amp;output=embed"></iframe></div>
+      <div class="map"><iframe title="Map showing Crew Barber Shop" referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps?q=Crew+Barber+Shop%2C+2331+66+St+NW%2C+Edmonton%2C+AB+T6K+4B4&amp;output=embed"></iframe></div>
     </div>
   </section>
 </main>
@@ -385,7 +388,7 @@
   <div class="wrap">
     <span>Preview made for Crew Barber Shop by Jan Gabriel, Southsites, Edmonton. Details from the public Google listing (Oct 27, 2026). Not the official website.</span>
     <a href="https://www.google.com/maps/search/Crew+Barber+Shop+2331+66+Street+NW+Edmonton" target="_blank" rel="noopener">Crew Barber Shop on Google Maps</a>
-    <span style="flex-basis:100%;font-size:12.5px;opacity:0.75">Photos: <a href="https://commons.wikimedia.org/wiki/File:M%C3%A1quina_de_cortar_pelo_o_cortapelos.jpg" target="_blank" rel="noopener">Casey Fleser from Nashville, TN</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barber_cutting_hair_with_comb._Back_view_of_young_man_in_barber_shop.jpg" target="_blank" rel="noopener">Nenad Stojkovic</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51210140096).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51209426382).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0), via Wikimedia Commons. Sample photos until Crew Barber Shop adds their own.</span>
+    <span style="flex-basis:100%;font-size:12.5px;opacity:0.75">Photos: <a href="https://commons.wikimedia.org/wiki/File:M%C3%A1quina_de_cortar_pelo_o_cortapelos.jpg" target="_blank" rel="noopener">Casey Fleser from Nashville, TN</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barber_cutting_hair_with_comb._Back_view_of_young_man_in_barber_shop.jpg" target="_blank" rel="noopener">Nenad Stojkovic</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51210140096).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0); <a href="https://commons.wikimedia.org/wiki/File:Barbershop_haircutting_session_(51209426382).jpg" target="_blank" rel="noopener">Hair Spies from US</a> (CC BY 2.0). Sample photos until Crew Barber Shop adds their own.</span>
   </div>
 </footer>
 
@@ -441,7 +444,7 @@
   };
   const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Edmonton' }));
   const today = (now.getDay() + 6) % 7, minute = now.getHours() * 60 + now.getMinutes();
-  let state = 'Hours not listed', sub = 'Call to check', open = false;
+  let state = 'Hours unconfirmed', sub = 'Call to check', open = false;
   const hoursKnown = Object.keys(biz.hours || {}).length > 0;
   if (hoursKnown) {
     const cur = spans(biz.hours[DAYS[today]]).find(([s, e]) => minute >= s && minute < e);
@@ -455,7 +458,7 @@
     }
   }
   for (const [dot, label] of [['hero-dot', 'hero-state'], ['hours-dot', 'hours-state']]) {
-    document.getElementById(dot).classList.toggle('closed', !open);
+    document.getElementById(dot).classList.toggle('closed', hoursKnown && !open); document.getElementById(dot).classList.toggle('unknown', !hoursKnown);
     document.getElementById(label).textContent = label === 'hours-state' ? `${state}. ${sub}.` : state;
   }
   document.getElementById('hero-sub').textContent = sub;
@@ -503,7 +506,7 @@
     const when = (nx) => nx.k === 0 ? 'today' : nx.k === 1 ? 'tomorrow' : DAYS[nx.d];
     function paintStatus() {
       const dot = document.getElementById('chat-dot'), label = document.getElementById('chat-status');
-      if (!known) { dot.classList.add('closed'); label.textContent = 'Call to check hours'; return; }
+      if (!known) { dot.classList.add('unknown'); label.textContent = 'Call to check hours'; return; }
       const s = status();
       dot.classList.toggle('closed', !s.open);
       label.textContent = s.open ? 'Open now, closes ' + s.closes : 'Closed now' + (s.next ? ', opens ' + when(s.next) + ' at ' + s.next.at : '');
